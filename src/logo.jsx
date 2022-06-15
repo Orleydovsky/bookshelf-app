@@ -1,5 +1,5 @@
 
-export const Logo = ({width = '48', height = '48'}) => {
+export const Logo = ({width = '50', height = '50'}) => {
     return (
 <svg 
     width={`${width}px`}
