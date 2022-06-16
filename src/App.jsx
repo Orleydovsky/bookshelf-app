@@ -1,45 +1,26 @@
+/** @jsxImportSource @emotion/react */
 import React, { useState } from "react";
-import { createRoot } from "react-dom/client";
 import { Dialog } from "@reach/dialog";
-import '@reach/dialog/styles.css'
+import "@reach/dialog/styles.css";
+import { Button, CloseButton } from "./components/styledComponents";
+import { Form } from "./components/Form";
 
-function Form({estaFuncion, buttonText}) {
-    const handleSubmit = e => {
-        e.preventDefault()
-        const {username, password} = e.target.elements
-        estaFuncion({
-            username: username.value,
-            password: password.value
-        })
-    }
-    return (
-    <form onSubmit={handleSubmit}>
-        <div>
-            <label htmlFor="username">Username:</label> 
-            <input id="username" type="text" />
-        </div>
-        <div>
-            <label id="password" htmlFor="password">Password:</label> 
-            <input id="password" type="password" />
-        </div>
-        <button type="submit">{buttonText}</button>
-    </form>
-    )
-  }
-
-export default function App() {
+function App() {
     const fromLogin = (thisFormData) => {
         console.log('loginData', thisFormData)
     }
+
     const fromRegister = (thisFormData) => {
         console.log('registerData', thisFormData)
     }
+
     const [openModal, setOpenModal] = useState({
         login: false,
         register: false,
     })
     const {login, register} = openModal
-    const handleClick = e => {
+    
+    const handleOpening = e => {
         setOpenModal({
             ...openModal,
             [e.target.name]: true,
@@ -49,22 +30,45 @@ export default function App() {
         setOpenModal({login: false, register: false})
     }
 
-    return <>
-        <h1>Bookshelf</h1>
-        <button name="login" onClick={handleClick}>Login</button>
-        <button name="register" onClick={handleClick}>Register</button>
+    const dialogCss = {
+        width: 'clamp(250px, 50%, 300px)', 
+        position: 'relative',
+        borderRadius: '15px'
+    }
 
-        <Dialog aria-label="Login form" isOpen={login}>
-        <h3>Login content</h3>
-            <button onClick={handleClosing}>&#10005;</button>
-            <Form estaFuncion={fromLogin} buttonText="Login"/>
-        </Dialog>
-        <Dialog aria-label="Registration form" isOpen={register}>
-        <h3>Register content</h3>
-            <button onClick={handleClosing}>&#10005;</button>
-            <Form estaFuncion={fromRegister}  buttonText="Register" />
-        </Dialog>
-    </>
+    return (<div
+    css={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: '100%',
+        height: '100vh',
+      }}
+    >
+        <img src="src\logo.png" alt="Bookshelf logo" width="75px" height="75px"/>
+            <h1 css={{color: '#8080ff'}}>Bookshelf</h1>
+            <div css={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(2, minmax(0, 1fr))',
+                gridGap: '0.75rem',
+            }}>
+            <Button name="login" onClick={handleOpening}>Login</Button>
+            <Button name="register" onClick={handleOpening} variant="secondary">Register</Button>
+            </div>
+            <Dialog aria-label="Login form" isOpen={login} css={dialogCss}>
+                <CloseButton onClick={handleClosing}>&#10005;</CloseButton>
+                <h3 css={{color: '#8080ff', fontFamily: 'cera-round-pro'}}>
+                    Login
+                </h3>
+                <Form onSubmit={fromLogin} buttonText="Login" />
+            </Dialog>
+            <Dialog aria-label="Registration form" isOpen={register} css={dialogCss}>
+                <CloseButton onClick={handleClosing}>&#10005;</CloseButton>
+            <h3 css={{color: '#8080ff'}}>Register</h3>
+                <Form onSubmit={fromRegister}  buttonText="Register" />
+            </Dialog>
+    </div>
+    )
 }
-const root = createRoot(document.getElementById("root"))
-root.render(<App />)
+export default App
