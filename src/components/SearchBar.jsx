@@ -1,57 +1,76 @@
 /** @jsxImportSource @emotion/react */
 import React, { useEffect, useState } from 'react';
-import {FaSearch} from "react-icons/fa";
+import {FaSearch, FaTimes} from "react-icons/fa";
 import {Spinner} from '../components/styledComponents'
+import {client} from '../utils/client'
 
 
 function SearchBar() {
-    const [searchInput, setSearchInput] = useState('')
-    const [queried, setQueried] = useState(false)
-    const [loading, setLoading] = useState(false)
-    const apiKey = import.meta.env.VITE_BOOKS_API_KEY
+    const [status, setStatus] = React.useState('idle')
+    const [data, setData] = React.useState()
+    const [error, setError] = React.useState()
+    const [query, setQuery] = React.useState()
+    const [queried, setQueried] = React.useState(false)
+  
+    const isLoading = status === 'loading'
+    const isSuccess = status === 'success'
+    const isError = status === 'error'
 
     useEffect(()=>{
         if (!queried) return
-        setLoading(true)
-        window.fetch(`https://www.googleapis.com/books/v1/volumes?q=${searchInput}&key=${apiKey}`)
-            .then(response => response.json())
-                .then(responseData => {
-                    if (!responseData.totalItems) {
-                        alert(`No results matching ${searchInput}`)
-                        return
-                    }
-                    responseData.items.map(volumes => {
-                        console.log(volumes.volumeInfo.title)
-                    })
-                    setLoading(false)
-                })
-    }, [searchInput])
+        setStatus('loading')
+        client(query)
+            .then(responseData => {
+                setData(responseData)
+                setStatus('sucess')
+            }, errorData => {
+                setError(errorData)
+                setStatus('error')
+              })
+    }, [query, queried])
 
     const handleSearch = e => {
         e.preventDefault()
-        setSearchInput(e.target.elements.search.value)
+        setQuery(e.target.elements.search.value)
         setQueried(true)
     }
     return (
-        <form onSubmit={handleSearch} css={{
-            border: '5px solid #8080ff;',
+        <>
+        <form onSubmit={handleSearch} 
+        css={{
+            border: `5px solid ${isError ? 'red' : '#8080ff'}`,
             display: 'flex',
             flexDirection:'row',
             justifyContent:'center',
             alignItems: 'center',
             padding: '10px 20px',
             borderRadius: '5px',
-            }}>
-            <input id="search" type="search" placeholder="Search books" css={{
+            backgroundColor: 'transparent',
+            }}
+            >
+            <input id="search" type="search" placeholder="Search books..." 
+            css={{
                 border: 'none',
                 fontSize: '16px',
                 '&:focus' : {
+                    color: 'transparent',
                     outline: 'none',
                 }
-            }}/>
-            {loading ? <Spinner/ > : <FaSearch color='#8080ff'/>}
+            }}
+            />
+            {isLoading ? 
+            <Spinner/> : 
+            isError ? 
+            <FaTimes color='red'/> : 
+            <FaSearch color='#8080ff'/>}
         </form>
-    );
+        {isError ? 
+        <div>
+            <p>Nothing found</p>
+            <pre>{error.message}</pre>
+        </div> : null}
+        </>
+        )
 }
 
 export default SearchBar;
