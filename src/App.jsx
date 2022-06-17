@@ -4,6 +4,7 @@ import { Dialog } from "@reach/dialog";
 import "@reach/dialog/styles.css";
 import { Button, CloseButton } from "./components/styledComponents";
 import { Form } from "./components/Form";
+import SearchBar from "./components/SearchBar";
 
 function App() {
     const fromLogin = (thisFormData) => {
@@ -46,6 +47,7 @@ function App() {
         height: '100vh',
       }}
     >
+    <SearchBar /><br />
         <img src="src\logo.png" alt="Bookshelf logo" width="75px" height="75px"/>
             <h1 css={{color: '#8080ff'}}>Bookshelf</h1>
             <div css={{
@@ -58,7 +60,7 @@ function App() {
             </div>
             <Dialog aria-label="Login form" isOpen={login} css={dialogCss}>
                 <CloseButton onClick={handleClosing}>&#10005;</CloseButton>
-                <h3 css={{color: '#8080ff', fontFamily: 'cera-round-pro'}}>
+                <h3 css={{color: '#8080ff'}}>
                     Login
                 </h3>
                 <Form onSubmit={fromLogin} buttonText="Login" />

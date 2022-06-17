@@ -8,7 +8,8 @@ const spin = keyframes({
 })
 
 const Spinner = styled(FaSpinner)({
-  animation: `${spin} 1s linear infinite`
+  animation: `${spin} 1s linear infinite`,
+  color: '#8080ff',
 })
 Spinner.defaultProps={
   'aria-label': 'loading',
@@ -40,7 +41,6 @@ const buttonVariants = {
     backgroundColor: '#f6f6f6',
     border: 'none',
     borderRadius: '5px',
-    color: '#191919',
     padding: '10px 10px',
   })
   
