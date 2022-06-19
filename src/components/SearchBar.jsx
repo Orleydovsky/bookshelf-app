@@ -41,19 +41,19 @@ function SearchBar() {
             border: `5px solid ${isError ? 'red' : '#8080ff'}`,
             display: 'flex',
             flexDirection:'row',
-            justifyContent:'center',
             alignItems: 'center',
             padding: '10px 20px',
             borderRadius: '5px',
             backgroundColor: 'transparent',
+            width: '60%',
             }}
             >
             <input id="search" type="search" placeholder="Search books..." 
             css={{
                 border: 'none',
                 fontSize: '16px',
+                width: '100%',
                 '&:focus' : {
-                    color: 'transparent',
                     outline: 'none',
                 }
             }}

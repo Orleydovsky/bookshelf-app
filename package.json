@@ -13,6 +13,7 @@
     "@emotion/styled": "^11.9.3",
     "@reach/dialog": "^0.17.0",
     "bootstrap": "^5.2.0-beta1",
+    "firebase": "^9.8.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-icons": "^4.4.0",
