@@ -1,17 +1,32 @@
 /** @jsxImportSource @emotion/react */
-import React, { useState } from "react";
+import { useState } from "react";
 import { Dialog } from "@reach/dialog";
 import "@reach/dialog/styles.css";
 import { Button, CloseButton } from "./components/styledComponents";
 import { Form } from "./components/Form";
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../firebase-config";
+import { async } from "@firebase/util";
 
 function UnauthenticatedApp() {
-    const fromLogin = (thisFormData) => {
-        console.log('loginData', thisFormData)
+    const fromLogin = async (thisFormData) => {
+        const {username, password} = thisFormData
+        try {
+            const user = await signInWithEmailAndPassword(auth, username, password)
+            console.log(user)
+        } catch (error) {
+            console.log(error.message)
+        }
     }
-
-    const fromRegister = (thisFormData) => {
-        console.log('registerData', thisFormData)
+    
+    const fromRegister = async (thisFormData) => {
+        const {username, password} = thisFormData
+        try {
+            const user = await createUserWithEmailAndPassword(auth, username, password)
+            console.log(user)
+        } catch (error) {
+            console.log(error.message)
+        }
     }
 
     const [openModal, setOpenModal] = useState({
