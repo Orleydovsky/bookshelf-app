@@ -1,6 +1,8 @@
+/** @jsxImportSource @emotion/react */
 import styled from '@emotion/styled/macro'
 import { FaSpinner } from "react-icons/fa";
 import {keyframes} from '@emotion/react'
+
 
 const spin = keyframes({
   '0%': {transform: 'rotate(0deg)'},
@@ -13,6 +15,7 @@ const Spinner = styled(FaSpinner)({
 })
 Spinner.defaultProps={
   'aria-label': 'loading',
+
 }
 const buttonVariants = {
     primary: {
@@ -67,10 +70,28 @@ const buttonVariants = {
     }
   })
 
+  function FullPageSpinner() {
+    return (
+      <div
+        css={{
+          fontSize: '4em',
+          height: '100vh',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      >
+        <Spinner/>
+      </div>
+    )
+  }
+
   export {
     Button, 
     Input, 
     FormGroup, 
     CloseButton, 
     Spinner,
+    FullPageSpinner,
   }
