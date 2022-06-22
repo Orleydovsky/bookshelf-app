@@ -22,7 +22,6 @@ function AuthenticatedApp() {
         alignItems: 'center',
     }}>
     <Header logout={logout}/>
-    <h3>Discover books today!</h3>
     <Discover/>
     </div>
     )

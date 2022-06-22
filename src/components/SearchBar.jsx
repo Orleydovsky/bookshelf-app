@@ -11,7 +11,8 @@ export default function SearchBar({handleSearch, isError, isLoading}) {
       padding: '10px 20px',
       borderRadius: '5px',
       backgroundColor: 'transparent',
-      width: '60%'
+      width: '100%',
+      boxSizing: "border-box"
       }}>
         <input id="search" type="search" placeholder="Search books..." css={{
           border: 'none',

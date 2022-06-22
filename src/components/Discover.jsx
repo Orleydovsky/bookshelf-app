@@ -23,6 +23,9 @@ function Discover() {
             .then(responseData => {
                 setData(responseData)
                 setStatus('success')
+                console.log(data.items[0].volumeInfo.imageLinks?.thumbnail)
+                console.log(data.items[1].volumeInfo.imageLinks?.thumbnail)
+                console.log(data.items[2].volumeInfo.imageLinks?.thumbnail)
             }, errorData => {
                 setError(errorData)
                 setStatus('error') 
@@ -35,7 +38,13 @@ function Discover() {
         setQueried(true)
     }
     return (
-        <>
+        <div css={{
+          width: '60%',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+        }}>
+        <h3>Discover books today!</h3>
         <SearchBar handleSearch={handleSearch} isError={isError} isLoading={isLoading}  />
         {isError ? 
             <div>
@@ -45,18 +54,25 @@ function Discover() {
         : null}
         {isSuccess ? (
         data?.items?.length ? (
-          <ul>
+          <div css={{
+        display: 'grid',
+        width: '100%',
+        gridGap: '15px',
+        gridTemplateColumns: 'repeat(auto-fill, 150px)',
+        gridAutoRows: '200px',
+        justifyContent: 'center',
+        marginTop: '15px',
+         }}>
             {data.items.map(volume => (
-              <li>
-                <Card title={volume.volumeInfo.title}/>
-              </li>
+
+                <Card title={volume.volumeInfo.title} imageURl={volume.volumeInfo.imageLinks?.thumbnail}/>
             ))}
-          </ul>
+          </div>
         ) : (
           <p>No books found. Try another search.</p>
         )
       ) : null}
-        </>
+        </div>
         )
 }
 
