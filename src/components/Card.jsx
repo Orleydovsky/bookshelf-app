@@ -1,5 +1,5 @@
 /** @jsxImportSource @emotion/react */
-
+import {Link} from 'react-router-dom'
 function Card({title, imageURl}) {
     return (
         <div css={{
@@ -33,7 +33,11 @@ function Card({title, imageURl}) {
                     '-webkit-box-orient': 'vertical',
                         }
                     }>
+                    <Link to={`book/${title}`} css={{
+                        textDecoration: 'none',
+                    }}>
                     {title}
+                    </Link>
                     </p>
                 </div>
         </div>
