@@ -1,5 +1,4 @@
 /** @jsxImportSource @emotion/react */
-import React from "react";
 import { Button, FormGroup, Input, Spinner } from './styledComponents';
 
 export function Form({ onSubmit, buttonText }) {
