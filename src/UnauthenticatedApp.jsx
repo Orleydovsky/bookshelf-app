@@ -13,9 +13,9 @@ function UnauthenticatedApp() {
         const {username, password} = thisFormData
         try {
             const user = await signInWithEmailAndPassword(auth, username, password)
-            console.log(user)
         } catch (error) {
             console.log(error.message)
+            //Todo, create better error message
         }
     }
     

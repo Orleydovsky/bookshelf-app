@@ -4,9 +4,11 @@ import "@reach/dialog/styles.css";
 import SearchBar from "./components/SearchBar";
 import {auth} from "../firebase-config"
 import { onAuthStateChanged, signOut } from "firebase/auth";
+import Card from "./components/Card";
 
 
 function AuthenticatedApp() {
+    const [data, setData] = useState()
     const logout = async () => {
         await signOut(auth)
     }
@@ -19,9 +21,9 @@ function AuthenticatedApp() {
         flexDirection: 'column',
         alignItems: 'center',
     }}>
-        <h1>{user?.email}</h1>
+        <h1>{user.email}</h1>
         <button onClick={logout}>logout</button>
-    <SearchBar />
+    <SearchBar/>
     </div>
     )
 }

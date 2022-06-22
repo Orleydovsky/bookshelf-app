@@ -1,16 +1,16 @@
 /** @jsxImportSource @emotion/react */
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import {FaSearch, FaTimes} from "react-icons/fa";
 import {Spinner} from '../components/styledComponents'
 import {client} from '../utils/client'
-
+import Card from './Card';
 
 function SearchBar() {
-    const [status, setStatus] = React.useState('idle')
-    const [data, setData] = React.useState()
-    const [error, setError] = React.useState()
-    const [query, setQuery] = React.useState()
-    const [queried, setQueried] = React.useState(false)
+    const [status, setStatus] = useState('idle')
+    const [data, setData] = useState()
+    const [error, setError] = useState()
+    const [query, setQuery] = useState()
+    const [queried, setQueried] = useState(false)
   
     const isLoading = status === 'loading'
     const isSuccess = status === 'success'
@@ -22,10 +22,10 @@ function SearchBar() {
         client(query)
             .then(responseData => {
                 setData(responseData)
-                setStatus('sucess')
+                setStatus('success')
             }, errorData => {
                 setError(errorData)
-                setStatus('error')
+                setStatus('error') 
               })
     }, [query, queried])
 
@@ -65,12 +65,28 @@ function SearchBar() {
             <FaSearch color='#8080ff'/>}
         </form>
         {isError ? 
-        <div>
-            <p>Nothing found</p>
-            <pre>{error.message}</pre>
-        </div> : null}
+            <div>
+                <p>Nothing found</p>
+                <pre>{error.message}</pre>
+            </div> 
+        : null}
+        {isSuccess ? (
+        data?.items?.length ? (
+          <ul>
+            {data.items.map(volume => (
+              <li>
+                {volume.volumeInfo.title}
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p>No books found. Try another search.</p>
+        )
+      ) : null}
         </>
         )
 }
+
+
 
 export default SearchBar;
