@@ -46,7 +46,7 @@ function UnauthenticatedApp() {
     }
 
     const dialogCss = {
-        width: 'clamp(250px, 50%, 300px)', 
+        width: 'clamp(200px, 50%, 300px)', 
         position: 'relative',
         borderRadius: '15px'
     }
@@ -74,13 +74,13 @@ function UnauthenticatedApp() {
             <Dialog aria-label="Login form" isOpen={login} css={dialogCss}>
                 <CloseButton onClick={handleClosing}>&#10005;</CloseButton>
                 <h3 css={{color: '#8080ff'}}>
-                    Login
+                    Login now!
                 </h3>
                 <Form onSubmit={fromLogin} buttonText="Login" />
             </Dialog>
             <Dialog aria-label="Registration form" isOpen={register} css={dialogCss}>
                 <CloseButton onClick={handleClosing}>&#10005;</CloseButton>
-            <h3 css={{color: '#8080ff'}}>Register</h3>
+            <h3 css={{color: '#8080ff'}}>Register today!</h3>
                 <Form onSubmit={fromRegister}  buttonText="Register" />
             </Dialog>
     </div>

@@ -51,7 +51,7 @@ function SearchBar() {
             <input id="search" type="search" placeholder="Search books..." 
             css={{
                 border: 'none',
-                fontSize: '16px',
+                fontSize: '1em',
                 width: '100%',
                 '&:focus' : {
                     outline: 'none',
@@ -75,7 +75,7 @@ function SearchBar() {
           <ul>
             {data.items.map(volume => (
               <li>
-                {volume.volumeInfo.title}
+                <Card title={volume.volumeInfo.title}/>
               </li>
             ))}
           </ul>

@@ -19,11 +19,11 @@ export function Form({ onSubmit, buttonText }) {
             width: '100%',
         }}>
             <FormGroup>
-                <label htmlFor="username">Username:</label>
-                <Input id="username" type="text" placeholder="Username" />
+                <label htmlFor="username" css={{marginBottom: '5px'}}>Email:</label>
+                <Input id="username" type="text" placeholder="username@email.com" />
             </FormGroup>
             <FormGroup>
-                <label id="password" htmlFor="password">Password:</label>
+                <label id="password" htmlFor="password" css={{marginBottom: '5px'}}>Password:</label>
                 <Input id="password" type="password" placeholder="Password" />
             </FormGroup>
             <FormGroup><br />

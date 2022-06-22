@@ -6,8 +6,8 @@ export function client(endpoint, customConfig = {}) {
     }
     return window
     .fetch(`https://www.googleapis.com/books/v1/volumes?q=${endpoint}&key=${apiKey}`, config)
-        .then(response => {
-            const data = response.json()
+        .then(async response => {
+            const data = await response.json()
             return response.ok ? data : Promise.reject(data)
         })
 }

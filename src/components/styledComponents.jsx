@@ -3,7 +3,6 @@ import styled from '@emotion/styled/macro'
 import { FaSpinner } from "react-icons/fa";
 import {keyframes} from '@emotion/react'
 
-
 const spin = keyframes({
   '0%': {transform: 'rotate(0deg)'},
   '100%': {transform: 'rotate(360deg)'}
@@ -35,6 +34,7 @@ const buttonVariants = {
     fontSize: '16px',
     padding: '10px 20px',
     transition: '0.15s',
+    color: 'white',
     '&:hover' : {
       boxShadow: 'rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px'
     }
@@ -50,6 +50,7 @@ const buttonVariants = {
   const FormGroup = styled.div({
     display: 'flex',
     flexDirection: 'column',
+    marginBottom: '10px',
   })
 
   const CloseButton = styled.button({
