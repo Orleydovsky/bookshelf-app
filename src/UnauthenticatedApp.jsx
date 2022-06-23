@@ -9,13 +9,13 @@ import { auth } from "../firebase-config";
 import { async } from "@firebase/util";
 
 function UnauthenticatedApp() {
+    const [error, setError] = useState()
     const fromLogin = async (thisFormData) => {
         const {username, password} = thisFormData
         try {
             const user = await signInWithEmailAndPassword(auth, username, password)
         } catch (error) {
-            console.log(error.message)
-            //Todo, create better error message
+            setError(error)
         }
     }
     
@@ -23,9 +23,8 @@ function UnauthenticatedApp() {
         const {username, password} = thisFormData
         try {
             const user = await createUserWithEmailAndPassword(auth, username, password)
-            console.log(user)
         } catch (error) {
-            console.log(error.message)
+            setError(error)
         }
     }
 
@@ -43,6 +42,7 @@ function UnauthenticatedApp() {
     }
     const handleClosing = () => {
         setOpenModal({login: false, register: false})
+        setError(null)
     }
 
     const dialogCss = {
@@ -73,15 +73,15 @@ function UnauthenticatedApp() {
             </div>
             <Dialog aria-label="Login form" isOpen={login} css={dialogCss}>
                 <CloseButton onClick={handleClosing}>&#10005;</CloseButton>
-                <h3 css={{color: '#8080ff'}}>
+                <h2 css={{color: '#8080ff'}}>
                     Login now!
-                </h3>
-                <Form onSubmit={fromLogin} buttonText="Login" />
+                </h2>
+                <Form error={error} onSubmit={fromLogin} buttonText="Login" />
             </Dialog>
             <Dialog aria-label="Registration form" isOpen={register} css={dialogCss}>
                 <CloseButton onClick={handleClosing}>&#10005;</CloseButton>
-            <h3 css={{color: '#8080ff'}}>Register today!</h3>
-                <Form onSubmit={fromRegister}  buttonText="Register" />
+            <h2 css={{color: '#8080ff'}}>Register today!</h2>
+                <Form error={error} onSubmit={fromRegister}  buttonText="Register" />
             </Dialog>
     </div>
     )

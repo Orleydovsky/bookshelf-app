@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { Button, FormGroup, Input, Spinner } from './styledComponents';
 
-export function Form({ onSubmit, buttonText }) {
+export function Form({ onSubmit, buttonText, error }) {
     const handleSubmit = e => {
         e.preventDefault();
         const { username, password } = e.target.elements;
@@ -27,6 +27,7 @@ export function Form({ onSubmit, buttonText }) {
             </FormGroup>
             <FormGroup><br />
             <Button type="submit">{false ? <Spinner /> : buttonText}</Button>
+            {error ?  <p>{error.message.split(': ')[1]}</p> : null}
             </FormGroup>
         </form>
     );
