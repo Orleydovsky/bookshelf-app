@@ -1,5 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import {client} from '../utils/client'
 import Card from './Card';
 import SearchBar from './SearchBar';
@@ -19,13 +20,11 @@ function Discover() {
     useEffect(()=>{
         if (!queried) return
         setStatus('loading')
-        client(query)
+        client(`https://www.googleapis.com/books/v1/volumes?q=${query}&`)
             .then(responseData => {
                 setData(responseData)
                 setStatus('success')
-                console.log(data.items[0].volumeInfo.imageLinks?.thumbnail)
-                console.log(data.items[1].volumeInfo.imageLinks?.thumbnail)
-                console.log(data.items[2].volumeInfo.imageLinks?.thumbnail)
+                console.log(data)
             }, errorData => {
                 setError(errorData)
                 setStatus('error') 
@@ -44,7 +43,7 @@ function Discover() {
           flexDirection: 'column',
           alignItems: 'center',
         }}>
-        <h3>Discover books today!</h3>
+        <h2>Discover books today!</h2>
         <SearchBar handleSearch={handleSearch} isError={isError} isLoading={isLoading}  />
         {isError ? 
             <div>
@@ -64,8 +63,11 @@ function Discover() {
         marginTop: '15px',
          }}>
             {data.items.map(volume => (
-
-                <Card title={volume.volumeInfo.title} imageURl={volume.volumeInfo.imageLinks?.thumbnail}/>
+              <Link key={volume.id} to={`book/${volume.id}`} css={{
+            textDecoration: 'none',
+        }}>
+                <Card  data={data} title={volume.volumeInfo.title} imageURl={volume.volumeInfo.imageLinks?.thumbnail}/>
+                </Link>
             ))}
           </div>
         ) : (
