@@ -1,25 +1,17 @@
 /** @jsxImportSource @emotion/react */
 import { useEffect, useState } from 'react';
+import { useQuery } from 'react-query';
 import { Link, useParams } from "react-router-dom";
 import { client } from '../utils/client';
 import { Button } from './styledComponents';
 
 
 function BookDetail() {
-    const [data, setData] = useState()
-    const [error, setError] = useState()
-    const [status, setStatus] =useState()
+
     const {bookId} = useParams() 
-    useEffect(()=>{
-        client(`https://www.googleapis.com/books/v1/volumes/${bookId}?`)
-            .then(responseData => {
-                setData(responseData)
-                setStatus('success')
-            }, errorData => {
-                setError(errorData)
-                setStatus('error') 
-              })
-    }, [bookId])
+    const {data, error, status} = useQuery(['BookDetail', bookId], 
+    ()=> client(`https://www.googleapis.com/books/v1/volumes/${bookId}?`))
+    console.log(status)
     return (
         <div css={{
 

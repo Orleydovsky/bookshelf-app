@@ -6,10 +6,13 @@ import { Button, CloseButton } from "./components/styledComponents";
 import { Form } from "./components/Form";
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase-config";
+import Logo from './assets/logo.png'
 
 function UnauthenticatedApp() {
+
     const [error, setError] = useState()
     const [loading, setLoading] = useState(false)
+
     const fromLogin = async (thisFormData) => {
         setLoading(true)
         const {username, password} = thisFormData
@@ -65,7 +68,7 @@ function UnauthenticatedApp() {
         height: '100vh',
       }}
     >
-        <img src="src\assets\logo.png" alt="Bookshelf logo" width="75px" height="75px"/>
+        <img src={Logo} alt="Bookshelf logo" width="75px" height="75px"/>
             <h1 css={{color: '#8080ff'}}>Bookshelf</h1>
             <div css={{
                 display: 'grid',

@@ -1,5 +1,5 @@
 /** @jsxImportSource @emotion/react */
-import React, { useState, useEffect } from "react";
+import { useState } from "react";
 import "@reach/dialog/styles.css";
 import UnauthenticatedApp from "./UnauthenticatedApp";
 import AuthenticatedApp from "./AuthenticatedApp";

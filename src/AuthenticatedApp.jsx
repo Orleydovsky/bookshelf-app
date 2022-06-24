@@ -7,16 +7,16 @@ import { Header } from './components/Header';
 import Discover from "./components/Discover";
 import BookDetail from "./components/BookDetail";
 import { Routes, Route, Link } from 'react-router-dom'
+import { useAuthSignOut } from "@react-query-firebase/auth";
 
 function AuthenticatedApp() {
     const [data, setData] = useState()
     const logout = async () => {
         await signOut(auth)
     }
-    const [user, setUser] = useState({})
-    onAuthStateChanged(auth, (currentUser) => {
-        setUser(currentUser)
-    })
+
+    
+
     return (<div css={{
         display: 'flex',
         flexDirection: 'column',

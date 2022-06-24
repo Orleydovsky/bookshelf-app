@@ -1,7 +1,5 @@
 export function client(endpoint, customConfig = {}) {
     const apiKey = import.meta.env.VITE_BOOKS_API_KEY
-    const linkIAmRequesting = `${endpoint}&key=${apiKey}`
-    console.log(linkIAmRequesting)
     const config = {
         method: 'GET',
         ...customConfig,

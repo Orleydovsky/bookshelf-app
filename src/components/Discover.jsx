@@ -1,5 +1,6 @@
 /** @jsxImportSource @emotion/react */
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
+import { useQuery } from "react-query";
 import { Link } from 'react-router-dom';
 import {client} from '../utils/client'
 import Card from './Card';
@@ -7,35 +8,23 @@ import SearchBar from './SearchBar';
 
 
 function Discover() {
-    const [status, setStatus] = useState('idle')
-    const [data, setData] = useState()
-    const [error, setError] = useState()
-    const [query, setQuery] = useState()
-    const [queried, setQueried] = useState(false)
-  
-    const isLoading = status === 'loading'
-    const isSuccess = status === 'success'
-    const isError = status === 'error'
+  const [query, setQuery] = useState()
+  const handleSearch = e => {
+    e.preventDefault()
+    setQuery(e.target.elements.search.value)
+    refetch()
+}
+  const {
+      data, 
+      error, 
+      isLoading, 
+      isError, 
+      refetch,
+      isSuccess,
+    } = useQuery('books', () => client(`https://www.googleapis.com/books/v1/volumes?q=${query}&`), {
+      enabled: false,
+    })
 
-    useEffect(()=>{
-        if (!queried) return
-        setStatus('loading')
-        client(`https://www.googleapis.com/books/v1/volumes?q=${query}&`)
-            .then(responseData => {
-                setData(responseData)
-                setStatus('success')
-                console.log(data)
-            }, errorData => {
-                setError(errorData)
-                setStatus('error') 
-              })
-    }, [query, queried])
-
-    const handleSearch = e => {
-        e.preventDefault()
-        setQuery(e.target.elements.search.value)
-        setQueried(true)
-    }
     return (
         <div css={{
           width: '60%',

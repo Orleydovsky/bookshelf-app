@@ -1,9 +1,7 @@
 /** @jsxImportSource @emotion/react */
-import {Link} from 'react-router-dom'
+
 function Card({title, imageURl, data}) {
-    
     return (
-        
             <div css={{
                 backgroundColor: 'black',
                 backgroundRepeat: 'no-repeat',

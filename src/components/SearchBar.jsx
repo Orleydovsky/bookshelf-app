@@ -1,5 +1,6 @@
 /** @jsxImportSource @emotion/react */
-import { FaSearch, FaSpinner, FaTimes,  } from "react-icons/fa";
+import { FaSearch , FaTimes,  } from "react-icons/fa";
+import { Spinner } from "./styledComponents";
 
 export default function SearchBar({handleSearch, isError, isLoading}) {
   return (
@@ -22,7 +23,7 @@ export default function SearchBar({handleSearch, isError, isLoading}) {
               outline: 'none'
             }
           }}/>
-            {isLoading ? <FaSpinner /> : isError ? <FaTimes color='red' /> : <FaSearch color='#8080ff' />}
+            {isLoading ? <Spinner /> : isError ? <FaTimes color='red' /> : <FaSearch color='#8080ff' />}
         </form>
         )
     }
