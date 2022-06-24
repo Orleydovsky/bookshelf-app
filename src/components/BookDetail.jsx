@@ -1,9 +1,8 @@
 /** @jsxImportSource @emotion/react */
 import { useEffect, useState } from 'react';
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { client } from '../utils/client';
-
-
+import { Button } from './styledComponents';
 
 
 function BookDetail() {
@@ -24,13 +23,15 @@ function BookDetail() {
     return (
         <div css={{
 
-            width: '60vw',
-            // backgroundColor: '#DDD',
+            width: 'clamp(250px, 80%, 500px)',
             marginTop: '15px',
             borderRadius: '15px',
-            // boxShadow: 'rgba(9, 30, 66, 0.25) 0px 4px 8px -2px, rgba(9, 30, 66, 0.08) 0px 0px 0px 1px',
+            boxShadow: 'rgba(9, 30, 66, 0.25) 0px 4px 8px -2px, rgba(9, 30, 66, 0.08) 0px 0px 0px 1px',
             padding: '15px',
             }}>
+            <Link to={'/'}>
+            <Button>Volver</Button>
+            </Link>
             <h2>{data?.volumeInfo.title} | {data?.volumeInfo.authors}</h2>
             <h3>{data?.volumeInfo.subtitle}</h3>
             <div css={{
@@ -39,7 +40,7 @@ function BookDetail() {
                 width: '150px',
                 height: '200px',
                 backgroundColor: 'white',
-                backgroundImage: `url('${data.volumeInfo.imageLinks?.thumbnail}')`,
+                backgroundImage: `url('${data?.volumeInfo?.imageLinks?.thumbnail}')`,
                 backgroundSize: 'cover',
                 }}>
 
@@ -50,7 +51,7 @@ function BookDetail() {
             alignItems: 'center',
         }}>
             <div css={{
-                // backgroundColor: 'white',
+                backgroundColor: 'white',
                 borderRadius: '15px',
                 marginTop:' 15px',
                 padding: '15px',
