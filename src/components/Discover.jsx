@@ -9,7 +9,12 @@ import SearchBar from './SearchBar';
 
 function Discover() {
   const [query, setQuery] = useState()
-
+  
+  const handleSearch = e => {
+    e.preventDefault()
+    setQuery(e.target.elements.search.value)
+    refetch()
+}
   
   const {
     data, 
@@ -18,16 +23,10 @@ function Discover() {
     isError, 
     refetch,
     isSuccess,
-  } = useQuery(['query'], () => client(`https://www.googleapis.com/books/v1/volumes?q=${query}&`), {
+  } = useQuery('query', () => client(`https://www.googleapis.com/books/v1/volumes?q=${query}&`), {
     enabled: false,
   })
 
-  const handleSearch = e => {
-    e.preventDefault()
-    setQuery(e.target.elements.search.value)
-    if(!query) return
-    refetch()
-}
   
     return (
         <div css={{
@@ -37,7 +36,7 @@ function Discover() {
           alignItems: 'center',
         }}>
         <h2>Discover books today!</h2>
-        <SearchBar handleSearch={handleSearch} isError={isError} isLoading={isLoading}  />
+        <SearchBar query={query} handleSearch={handleSearch} isError={isError} isLoading={isLoading}  />
         {isError ? 
             <div>
                 <p>Nothing found</p>

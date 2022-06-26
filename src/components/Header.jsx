@@ -2,6 +2,7 @@
 import { Button } from '../components/styledComponents';
 import { FaSignOutAlt, FaUser } from "react-icons/fa";
 import { auth } from "../../firebase-config";
+import { Link } from 'react-router-dom';
 
 export function Header({logout}) {
   return <div css={{
@@ -29,9 +30,21 @@ export function Header({logout}) {
           Welcome, <br />
           {auth.currentUser.email.split('@').slice(0, 1).join()}!
       </div>
-         <Button onClick={logout}>
-            <FaSignOutAlt />
-         </Button>
+         <div>
+         <Link to='/readinglist'>
+          <Button>
+            Reading list
+          </Button>
+         </Link>
+         <Link to='/finishedbooks'>
+          <Button>
+             Finished books
+          </Button>
+         </Link>
+         </div>
+          <Button onClick={logout}>
+              <FaSignOutAlt />
+          </Button>
     </div>;
 }
   
