@@ -9,22 +9,26 @@ import SearchBar from './SearchBar';
 
 function Discover() {
   const [query, setQuery] = useState()
+
+  
+  const {
+    data, 
+    error, 
+    isLoading, 
+    isError, 
+    refetch,
+    isSuccess,
+  } = useQuery(['query'], () => client(`https://www.googleapis.com/books/v1/volumes?q=${query}&`), {
+    enabled: false,
+  })
+
   const handleSearch = e => {
     e.preventDefault()
     setQuery(e.target.elements.search.value)
+    if(!query) return
     refetch()
 }
-  const {
-      data, 
-      error, 
-      isLoading, 
-      isError, 
-      refetch,
-      isSuccess,
-    } = useQuery('books', () => client(`https://www.googleapis.com/books/v1/volumes?q=${query}&`), {
-      enabled: false,
-    })
-
+  
     return (
         <div css={{
           width: '60%',

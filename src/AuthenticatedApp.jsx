@@ -14,9 +14,7 @@ function AuthenticatedApp() {
     const logout = async () => {
         await signOut(auth)
     }
-
     
-
     return (<div css={{
         display: 'flex',
         flexDirection: 'column',

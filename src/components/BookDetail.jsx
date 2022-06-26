@@ -1,5 +1,5 @@
 /** @jsxImportSource @emotion/react */
-import { useEffect, useState } from 'react';
+import { FaArrowLeft, FaPlusCircle } from 'react-icons/fa';
 import { useQuery } from 'react-query';
 import { Link, useParams } from "react-router-dom";
 import { client } from '../utils/client';
@@ -11,7 +11,6 @@ function BookDetail() {
     const {bookId} = useParams() 
     const {data, error, status} = useQuery(['BookDetail', bookId], 
     ()=> client(`https://www.googleapis.com/books/v1/volumes/${bookId}?`))
-    console.log(status)
     return (
         <div css={{
 
@@ -21,9 +20,21 @@ function BookDetail() {
             boxShadow: 'rgba(9, 30, 66, 0.25) 0px 4px 8px -2px, rgba(9, 30, 66, 0.08) 0px 0px 0px 1px',
             padding: '15px',
             }}>
-            <Link to={'/'}>
-            <Button>Volver</Button>
-            </Link>
+            <div css={{
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+            }}>
+
+                <Link to={'/'}>
+                    <Button>
+                        <FaArrowLeft/>
+                    </Button>
+                </Link>
+                <Button>
+                    <FaPlusCircle/>
+                </Button>
+            </div>
             <h2>{data?.volumeInfo.title} | {data?.volumeInfo.authors}</h2>
             <h3>{data?.volumeInfo.subtitle}</h3>
             <div css={{
