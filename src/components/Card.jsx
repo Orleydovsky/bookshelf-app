@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 
-function Card({title, imageURl, data}) {
+function Card({title, imageURl}) {
     return (
             <div css={{
                 backgroundColor: 'black',

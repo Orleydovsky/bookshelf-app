@@ -1,13 +1,12 @@
 /** @jsxImportSource @emotion/react */
-import React, { useState } from "react";
+import { useState } from "react";
 import "@reach/dialog/styles.css";
 import {auth} from "../firebase-config"
-import { onAuthStateChanged, signOut } from "firebase/auth";
+import { signOut } from "firebase/auth";
 import { Header } from './components/Header';
 import Discover from "./components/Discover";
 import BookDetail from "./components/BookDetail";
 import { Routes, Route, Link } from 'react-router-dom'
-import { useAuthSignOut } from "@react-query-firebase/auth";
 
 function AuthenticatedApp() {
 

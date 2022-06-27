@@ -1,6 +1,4 @@
 /** @jsxImportSource @emotion/react */
-import { async } from '@firebase/util';
-import { useState } from 'react';
 import { useQuery } from "react-query";
 import { Link } from 'react-router-dom';
 import {client} from '../utils/client'
