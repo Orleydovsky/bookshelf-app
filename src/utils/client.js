@@ -1,14 +1,8 @@
-export function client(endpoint, customConfig = {}) {
+export function client(endpoint) {
     const apiKey = import.meta.env.VITE_BOOKS_API_KEY
-    const config = {
-        method: 'GET',
-        ...customConfig,
-    }
-    return window
-    .fetch(`${endpoint}key=${apiKey}`, config)
-    
+    return window.fetch(`${endpoint}key=${apiKey}`)
         .then(async response => {
-            const data = await response.json()
-            return response.ok ? data : Promise.reject(data)
-        })
-}
+                const data = await response.json()
+                return response.ok ? data : Promise.reject(data)
+            })
+        }

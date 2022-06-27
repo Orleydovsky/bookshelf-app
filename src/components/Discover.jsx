@@ -1,4 +1,5 @@
 /** @jsxImportSource @emotion/react */
+import { async } from '@firebase/util';
 import { useState } from 'react';
 import { useQuery } from "react-query";
 import { Link } from 'react-router-dom';
@@ -7,27 +8,22 @@ import Card from './Card';
 import SearchBar from './SearchBar';
 
 
-function Discover() {
-  const [query, setQuery] = useState()
-  
-  const handleSearch = e => {
-    e.preventDefault()
-    setQuery(e.target.elements.search.value)
-    refetch()
-}
-  
+function Discover({query, handleSearch}) {
+
   const {
     data, 
     error, 
     isLoading, 
-    isError, 
-    refetch,
+    isError,
     isSuccess,
-  } = useQuery('query', () => client(`https://www.googleapis.com/books/v1/volumes?q=${query}&`), {
-    enabled: false,
+  } = useQuery([query], () => client(`https://www.googleapis.com/books/v1/volumes?q=${query}&`), {
+    enabled: Boolean(query),
+    refetchOnMount: false
   })
-
   
+
+
+
     return (
         <div css={{
           width: '60%',
@@ -36,7 +32,7 @@ function Discover() {
           alignItems: 'center',
         }}>
         <h2>Discover books today!</h2>
-        <SearchBar query={query} handleSearch={handleSearch} isError={isError} isLoading={isLoading}  />
+        <SearchBar handleSearch={handleSearch} isError={isError} isLoading={isLoading}  />
         {isError ? 
             <div>
                 <p>Nothing found</p>

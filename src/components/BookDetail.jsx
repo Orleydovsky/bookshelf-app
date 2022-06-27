@@ -7,13 +7,11 @@ import { Button } from './styledComponents';
 
 
 function BookDetail() {
-
     const {bookId} = useParams() 
-    const {data, error, status} = useQuery(['BookDetail', bookId], 
-    ()=> client(`https://www.googleapis.com/books/v1/volumes/${bookId}?`))
+    const {data, error, status} = useQuery(['bookDetail', bookId], 
+    () => client(`https://www.googleapis.com/books/v1/volumes/${bookId}?`))
     return (
         <div css={{
-
             width: 'clamp(250px, 80%, 500px)',
             marginTop: '15px',
             borderRadius: '15px',

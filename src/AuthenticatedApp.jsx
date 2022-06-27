@@ -10,7 +10,14 @@ import { Routes, Route, Link } from 'react-router-dom'
 import { useAuthSignOut } from "@react-query-firebase/auth";
 
 function AuthenticatedApp() {
-    const [data, setData] = useState()
+
+    const [query, setQuery] = useState()
+  
+    const handleSearch = e => {
+      e.preventDefault()
+      setQuery(e.target.elements.search.value)
+    }
+
     const logout = async () => {
         await signOut(auth)
     }
@@ -23,8 +30,8 @@ function AuthenticatedApp() {
     }}>
     <Header logout={logout}/>
         <Routes>
-          <Route path="/" element={<Discover/>} />
-          <Route path="/book/:bookId" element={<BookDetail data={data} />} />
+          <Route path="/" element={<Discover handleSearch={handleSearch} query={query}/>} />
+          <Route path="/book/:bookId" element={<BookDetail/>} />
           <Route path="*" element={<h1>Nothing found <Link to="/">Back</Link></h1>} />
         </Routes>
     </div>

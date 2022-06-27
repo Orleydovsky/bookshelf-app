@@ -1,0 +1,45 @@
+import "./styles.css";
+import { useState } from "react";
+import { useQuery } from "react-query";
+
+export default function App() {
+  const [searchInput, setSearchInput] = useState();
+
+  const getByCharacterName = async (apiEndPoint) => {
+    const response = await fetch(apiEndPoint);
+    return response.json();
+  };
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    setSearchInput(event.target.elements.search.value);
+  };
+
+  const { data, isLoading, isSuccess } = useQuery(
+    [searchInput],
+    () =>
+      getByCharacterName(
+        `https://www.googleapis.com/books/v1/volumes?q=${searchInput}&`
+      ),
+    {
+      enabled: Boolean(searchInput)
+    }
+  );
+
+  return (
+    <div className="App">
+      <form onSubmit={handleSubmit}>
+        <input id="search" type="search" placeholder="Search Rick" />
+      </form>
+      {isLoading ? (
+        <p>Loading...</p>
+      ) : isSuccess ? (
+        <ul>
+          {isSuccess}
+          {data?.results?.map((character) => {
+            return <li key={character.id}>{character.name}</li>;
+          })}
+        </ul>
+      ) : null}
+    </div>
+  );
+}
