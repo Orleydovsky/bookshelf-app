@@ -32,12 +32,12 @@ export function Header({logout}) {
       </div>
          <div>
          <Link to='/readinglist'>
-          <Button>
+          <Button variant='secondary'>
             Reading list
           </Button>
          </Link>
          <Link to='/finishedbooks'>
-          <Button>
+          <Button variant='secondary'>
              Finished books
           </Button>
          </Link>

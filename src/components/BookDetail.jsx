@@ -1,5 +1,6 @@
 /** @jsxImportSource @emotion/react */
-import { FaArrowLeft, FaPlusCircle } from 'react-icons/fa';
+import { useState } from 'react';
+import { FaArrowLeft, FaPlusCircle, FaHeart } from 'react-icons/fa';
 import { useQuery } from 'react-query';
 import { Link, useParams } from "react-router-dom";
 import { client } from '../utils/client';
@@ -8,8 +9,12 @@ import { Button } from './styledComponents';
 
 function BookDetail() {
     const {bookId} = useParams() 
+    const [isFavorite, setIsFavorite] = useState(false)
     const {data, error, status} = useQuery(['bookDetail', bookId], 
     () => client(`https://www.googleapis.com/books/v1/volumes/${bookId}?`))
+    const handleFavorite = e => {
+        setIsFavorite(!isFavorite)
+    }
     return (
         <div css={{
             width: 'clamp(250px, 80%, 500px)',
@@ -29,8 +34,8 @@ function BookDetail() {
                         <FaArrowLeft/>
                     </Button>
                 </Link>
-                <Button>
-                    <FaPlusCircle/>
+                <Button onClick={handleFavorite}>
+                    {isFavorite ? <FaHeart/> : <FaPlusCircle/>}
                 </Button>
             </div>
             <h2>{data?.volumeInfo.title} | {data?.volumeInfo.authors}</h2>
