@@ -1,35 +1,30 @@
 /** @jsxImportSource @emotion/react */
 import { useState } from 'react';
 import { FaArrowLeft, FaPlusCircle, FaHeart } from 'react-icons/fa';
-import { useQuery } from 'react-query';
+import { useQuery, useMutation } from 'react-query';
 import { Link, useParams } from "react-router-dom";
 import { client } from '../utils/client';
 import { Button } from './styledComponents';
 import { auth, db } from '../../firebase-config';
 import { collection, serverTimestamp, addDoc } from "firebase/firestore";
 
-
-function BookDetail() {
-
-    
-   const handleReadingList = async () => {
-       try {
-           const docRef = await addDoc(collection(db, "books"), {
-               uid: auth.currentUser.uid,
-               createdAt: serverTimestamp(),
-               bookId: bookId,
-           })
-           console.log("Document written with ID: ", docRef.id);
-       } catch (e) {
-           console.error("Error adding document: ", e)
-       }
-   } 
-
-    const {bookId} = useParams() 
-
+function BookDetailCard({bookId}) {
     const {data: bookIdData} = useQuery(['bookDetail', bookId], 
     () => client(`https://www.googleapis.com/books/v1/volumes/${bookId}?`))
-    
+
+    const handleReadingList = async () => {
+        try {
+            const docRef = await addDoc(collection(db, "books"), {
+                uid: auth.currentUser.uid,
+                createdAt: serverTimestamp(),
+                bookId: bookId,
+            })
+            console.log("Document written with ID: ", docRef.id);
+        } catch (e) {
+            console.error("Error adding document: ", e)
+        }
+    } 
+
     return (
         <div css={{
             width: 'clamp(250px, 80%, 500px)',
@@ -81,7 +76,16 @@ function BookDetail() {
             </div>
         </div>
         </div>
+    )
+}
+
+function BookDetail() {
+
+    const {bookId} = useParams() 
+
+    return (
+        <BookDetailCard bookId={bookId}/>
     );
 }
 
-export default BookDetail;
+export {BookDetail, BookDetailCard}

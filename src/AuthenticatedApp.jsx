@@ -5,7 +5,7 @@ import {auth} from "../firebase-config"
 import { signOut } from "firebase/auth";
 import { Header } from './components/Header';
 import Discover from "./components/Discover";
-import BookDetail from "./components/BookDetail";
+import {BookDetail} from "./components/BookDetail";
 import { Routes, Route, Link } from 'react-router-dom'
 import ReadingList from "./components/ReadingList";
 import FinishedBooks from "./components/FinishedBooks";
