@@ -5,7 +5,6 @@ import {client} from '../utils/client'
 import Card from './Card';
 import SearchBar from './SearchBar';
 
-
 function Discover({query, handleSearch}) {
 
   const {
@@ -52,7 +51,11 @@ function Discover({query, handleSearch}) {
               <Link key={volume.id} to={`book/${volume.id}`} css={{
             textDecoration: 'none',
         }}>
-                <Card  data={data} title={volume.volumeInfo.title} imageURl={volume.volumeInfo.imageLinks?.thumbnail}/>
+                <Card  
+                  data={data} 
+                  title={volume.volumeInfo.title} 
+                  imageURl={volume.volumeInfo.imageLinks?.thumbnail}
+                />
                 </Link>
             ))}
           </div>

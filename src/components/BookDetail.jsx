@@ -5,16 +5,31 @@ import { useQuery } from 'react-query';
 import { Link, useParams } from "react-router-dom";
 import { client } from '../utils/client';
 import { Button } from './styledComponents';
+import { auth, db } from '../../firebase-config';
+import { collection, serverTimestamp, addDoc } from "firebase/firestore";
 
 
 function BookDetail() {
+
+    
+   const handleReadingList = async () => {
+       try {
+           const docRef = await addDoc(collection(db, "books"), {
+               uid: auth.currentUser.uid,
+               createdAt: serverTimestamp(),
+               bookId: bookId,
+           })
+           console.log("Document written with ID: ", docRef.id);
+       } catch (e) {
+           console.error("Error adding document: ", e)
+       }
+   } 
+
     const {bookId} = useParams() 
-    const [isFavorite, setIsFavorite] = useState(false)
-    const {data, error, status} = useQuery(['bookDetail', bookId], 
+
+    const {data: bookIdData} = useQuery(['bookDetail', bookId], 
     () => client(`https://www.googleapis.com/books/v1/volumes/${bookId}?`))
-    const handleFavorite = e => {
-        setIsFavorite(!isFavorite)
-    }
+    
     return (
         <div css={{
             width: 'clamp(250px, 80%, 500px)',
@@ -34,19 +49,19 @@ function BookDetail() {
                         <FaArrowLeft/>
                     </Button>
                 </Link>
-                <Button onClick={handleFavorite}>
-                    {isFavorite ? <FaHeart/> : <FaPlusCircle/>}
+                <Button onClick={handleReadingList}>
+                    
                 </Button>
             </div>
-            <h2>{data?.volumeInfo.title} | {data?.volumeInfo.authors}</h2>
-            <h3>{data?.volumeInfo.subtitle}</h3>
+            <h2>{bookIdData?.volumeInfo.title} | {bookIdData?.volumeInfo.authors}</h2>
+            <h3>{bookIdData?.volumeInfo.subtitle}</h3>
             <div css={{
                 boxShadow: 'rgba(9, 30, 66, 0.25) 0px 4px 8px -2px, rgba(9, 30, 66, 0.08) 0px 0px 0px 1px',
                 borderRadius: '15px',
                 width: '150px',
                 height: '200px',
                 backgroundColor: 'white',
-                backgroundImage: `url('${data?.volumeInfo?.imageLinks?.thumbnail}')`,
+                backgroundImage: `url('${bookIdData?.volumeInfo?.imageLinks?.thumbnail}')`,
                 backgroundSize: 'cover',
                 }}>
 
@@ -62,7 +77,7 @@ function BookDetail() {
                 marginTop:' 15px',
                 padding: '15px',
                 color: 'black',
-             }} dangerouslySetInnerHTML={{__html: data?.volumeInfo.description}}>
+             }} dangerouslySetInnerHTML={{__html: bookIdData?.volumeInfo.description}}>
             </div>
         </div>
         </div>
