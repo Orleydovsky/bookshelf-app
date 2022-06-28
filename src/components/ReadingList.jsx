@@ -1,3 +1,5 @@
+/** @jsxImportSource @emotion/react */
+
 import React, { useEffect } from 'react';
 import { collection, getDocs } from "firebase/firestore";
 import { auth, db } from '../../firebase-config';
@@ -8,10 +10,13 @@ import { BookDetailCard } from './BookDetail';
 function ReadingList() {
     const {data, isLoading, isSuccess} = useQuery('books', () => getDocs(collection(db, "books")))
     return (
-        <div>
-        <Link to="/">Back</Link> 
+        <div css={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            }}>
         {
-            data.docs.map(books => {
+            data?.docs?.map(books => {
                 return <BookDetailCard bookId={books.data().bookId}/>
             })
         }

@@ -4,7 +4,7 @@ import { FaArrowLeft, FaPlusCircle, FaHeart } from 'react-icons/fa';
 import { useQuery, useMutation } from 'react-query';
 import { Link, useParams } from "react-router-dom";
 import { client } from '../utils/client';
-import { Button } from './styledComponents';
+import { Button, Spinner } from './styledComponents';
 import { auth, db } from '../../firebase-config';
 import { collection, serverTimestamp, addDoc } from "firebase/firestore";
 
@@ -12,18 +12,20 @@ function BookDetailCard({bookId}) {
     const {data: bookIdData} = useQuery(['bookDetail', bookId], 
     () => client(`https://www.googleapis.com/books/v1/volumes/${bookId}?`))
 
-    const handleReadingList = async () => {
-        try {
-            const docRef = await addDoc(collection(db, "books"), {
-                uid: auth.currentUser.uid,
-                createdAt: serverTimestamp(),
-                bookId: bookId,
-            })
-            console.log("Document written with ID: ", docRef.id);
-        } catch (e) {
-            console.error("Error adding document: ", e)
-        }
+    const asyncThatTalksToServer = async () => {
+        const docRef = await addDoc(collection(db, "books"), {
+            uid: auth.currentUser.uid,
+            createdAt: serverTimestamp(),
+            bookId: bookId,
+        })
     } 
+    const {mutate, isLoading, isSuccess} = useMutation(asyncThatTalksToServer) 
+
+    const addToReadingList = () => {
+        mutate()
+    }
+
+
 
     return (
         <div css={{
@@ -44,8 +46,8 @@ function BookDetailCard({bookId}) {
                         <FaArrowLeft/>
                     </Button>
                 </Link>
-                <Button onClick={handleReadingList}>
-                    
+                <Button onClick={addToReadingList}>
+                    {isLoading ? <Spinner css={{color: 'white'}}/> : isSuccess ? <FaHeart/> : <FaPlusCircle/>}
                 </Button>
             </div>
             <h2>{bookIdData?.volumeInfo.title} | {bookIdData?.volumeInfo.authors}</h2>
