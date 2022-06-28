@@ -6,9 +6,12 @@ import { Link, useParams } from "react-router-dom";
 import { client } from '../utils/client';
 import { Button, Spinner } from './styledComponents';
 import { auth, db } from '../../firebase-config';
-import { collection, serverTimestamp, addDoc } from "firebase/firestore";
+import { collection, serverTimestamp, addDoc, getDocs } from "firebase/firestore";
 
 function BookDetailCard({bookId}) {
+
+    const {data} = useQuery('books', () => getDocs(collection(db, "books")))
+        const found = data?.docs.find(items => items.data().bookId === bookId)
     const {data: bookIdData} = useQuery(['bookDetail', bookId], 
     () => client(`https://www.googleapis.com/books/v1/volumes/${bookId}?`))
 
@@ -46,8 +49,8 @@ function BookDetailCard({bookId}) {
                         <FaArrowLeft/>
                     </Button>
                 </Link>
-                <Button onClick={addToReadingList}>
-                    {isLoading ? <Spinner css={{color: 'white'}}/> : isSuccess ? <FaHeart/> : <FaPlusCircle/>}
+                <Button onClick={found ? null: addToReadingList}>
+                    {found? `On reading list` : isLoading ? <Spinner css={{color: 'white'}}/> : isSuccess ? <FaHeart/> : <FaPlusCircle/>}
                 </Button>
             </div>
             <h2>{bookIdData?.volumeInfo.title} | {bookIdData?.volumeInfo.authors}</h2>
