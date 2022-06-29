@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { useState } from 'react';
-import { FaArrowLeft, FaPlusCircle, FaHeart, FaMinus, FaMinusCircle } from 'react-icons/fa';
+import { FaArrowLeft, FaPlusCircle, FaHeart, FaMinus, FaMinusCircle, FaCheckCircle } from 'react-icons/fa';
 import { useQuery, useMutation } from 'react-query';
 import { Link, useParams } from "react-router-dom";
 import { client } from '../utils/client';
@@ -50,9 +50,22 @@ function BookDetailCard({bookId}) {
                         <FaArrowLeft/>
                     </Button>
                 </Link>
-                <Button onClick={onReadingList ? null: addToReadingList}>
-                    {onReadingList ? <FaMinusCircle/> : isLoading ? <Spinner css={{color: 'white'}}/> : isSuccess ? <FaHeart/> : <FaPlusCircle/>}
+                {onReadingList || isSuccess ?
+                <div>
+                <Button css={{marginRight: '5px'}}>
+                    <FaMinusCircle/>
+                </Button> 
+                <Button>
+                    <FaCheckCircle/>
+                </Button> 
+                </div>
+                : <Button>
+                    {isLoading ?
+                    <Spinner css={{color: 'white'}}/> :
+                    <FaPlusCircle onClick={addToReadingList}/>
+                    }
                 </Button>
+                }
             </div>
             <h2>{bookIdData?.volumeInfo.title} | {bookIdData?.volumeInfo.authors}</h2>
             <h3>{bookIdData?.volumeInfo.subtitle}</h3>
