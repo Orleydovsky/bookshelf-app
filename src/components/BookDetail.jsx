@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { useState } from 'react';
-import { FaArrowLeft, FaPlusCircle, FaHeart } from 'react-icons/fa';
+import { FaArrowLeft, FaPlusCircle, FaHeart, FaMinus, FaMinusCircle } from 'react-icons/fa';
 import { useQuery, useMutation } from 'react-query';
 import { Link, useParams } from "react-router-dom";
 import { client } from '../utils/client';
@@ -11,7 +11,8 @@ import { collection, serverTimestamp, addDoc, getDocs } from "firebase/firestore
 function BookDetailCard({bookId}) {
 
     const {data} = useQuery('books', () => getDocs(collection(db, "books")))
-        const found = data?.docs.find(items => items.data().bookId === bookId)
+        const onReadingList = data?.docs.find(items => items.data().bookId === bookId)
+        
     const {data: bookIdData} = useQuery(['bookDetail', bookId], 
     () => client(`https://www.googleapis.com/books/v1/volumes/${bookId}?`))
 
@@ -49,8 +50,8 @@ function BookDetailCard({bookId}) {
                         <FaArrowLeft/>
                     </Button>
                 </Link>
-                <Button onClick={found ? null: addToReadingList}>
-                    {found? `On reading list` : isLoading ? <Spinner css={{color: 'white'}}/> : isSuccess ? <FaHeart/> : <FaPlusCircle/>}
+                <Button onClick={onReadingList ? null: addToReadingList}>
+                    {onReadingList ? <FaMinusCircle/> : isLoading ? <Spinner css={{color: 'white'}}/> : isSuccess ? <FaHeart/> : <FaPlusCircle/>}
                 </Button>
             </div>
             <h2>{bookIdData?.volumeInfo.title} | {bookIdData?.volumeInfo.authors}</h2>
