@@ -6,12 +6,12 @@ import { signOut } from "firebase/auth";
 import { Header } from './components/Header';
 import Discover from "./components/Discover";
 import {BookDetail} from "./components/BookDetail";
-import { Routes, Route, Link } from 'react-router-dom'
+import { Routes, Route, Link, useMatch, NavLink} from 'react-router-dom'
 import ReadingList from "./components/ReadingList";
 import FinishedBooks from "./components/FinishedBooks";
+import { Button } from "./components/styledComponents";
 
 function AuthenticatedApp() {
-
     const [query, setQuery] = useState()
   
     const handleSearch = e => {
@@ -30,6 +30,29 @@ function AuthenticatedApp() {
         alignItems: 'center',
     }}>
     <Header logout={logout}/>
+    <div css={{
+      marginTop: '15px',
+      '& .active Button' : {
+      boxShadow: 'rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px',
+      border: '2.5px solid #6f6fff'
+      }
+    }}>
+         <NavLink to='/' activeClassName='active'>
+          <Button>
+            Discover
+          </Button>
+         </NavLink>
+         <NavLink to='/readinglist' activeClassName='active'>
+          <Button>
+            Reading list
+          </Button>
+         </NavLink>
+         <NavLink to='/finishedbooks' activeClassName='active'>
+          <Button>
+             Finished books
+          </Button>
+         </NavLink>
+         </div>
         <Routes>
           <Route path="/" element={
             <Discover 

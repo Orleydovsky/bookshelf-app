@@ -6,11 +6,16 @@ import { Link, useParams } from "react-router-dom";
 import { client } from '../utils/client';
 import { Button, Spinner } from './styledComponents';
 import { auth, db } from '../../firebase-config';
-import { collection, serverTimestamp, addDoc, getDocs } from "firebase/firestore";
+import { collection, serverTimestamp, addDoc, getDocs, query, where } from "firebase/firestore";
+import ReadingList from './ReadingList';
 
 function BookDetailCard({bookId}) {
 
-    const {data} = useQuery('books', () => getDocs(collection(db, "books")))
+    const addToFinishedList = () => {
+        alert('Añadido a terminados')
+    }
+
+    const {data} = useQuery(['books', auth.currentUser.uid], () => getDocs(query(collection(db, "books"), where("uid", "==", auth.currentUser.uid))))
         const onReadingList = data?.docs.find(items => items.data().bookId === bookId)
         
     const {data: bookIdData} = useQuery(['bookDetail', bookId], 
@@ -21,6 +26,7 @@ function BookDetailCard({bookId}) {
             uid: auth.currentUser.uid,
             createdAt: serverTimestamp(),
             bookId: bookId,
+            list: 'readingList'
         })
     } 
     const {mutate, isLoading, isSuccess} = useMutation(asyncThatTalksToServer) 
@@ -56,7 +62,7 @@ function BookDetailCard({bookId}) {
                     <FaMinusCircle/>
                 </Button> 
                 <Button>
-                    <FaCheckCircle/>
+                    <FaCheckCircle onClick={addToFinishedList}/>
                 </Button> 
                 </div>
                 : <Button>

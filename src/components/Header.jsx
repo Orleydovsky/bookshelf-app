@@ -30,18 +30,7 @@ export function Header({logout}) {
           Welcome, <br />
           {auth.currentUser.email.split('@').slice(0, 1).join()}!
       </div>
-         <div>
-         <Link to='/readinglist'>
-          <Button variant='secondary'>
-            Reading list
-          </Button>
-         </Link>
-         <Link to='/finishedbooks'>
-          <Button variant='secondary'>
-             Finished books
-          </Button>
-         </Link>
-         </div>
+
           <Button onClick={logout}>
               <FaSignOutAlt />
           </Button>

@@ -21,7 +21,7 @@ function ReadingList() {
             }}>
         {
             data?.docs?.map(books => {
-                return <BookDetailCard bookId={books.data().bookId}/>
+                return <BookDetailCard bookId={books.data().bookId} key={books.data().bookId}/>
             })
         }
         </div>
