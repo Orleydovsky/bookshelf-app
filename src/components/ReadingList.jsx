@@ -10,7 +10,7 @@ import { FullPageSpinner } from './styledComponents';
 
 function ReadingList() {
     
-    const {data, isLoading, isSuccess} = useQuery(['books', auth.currentUser.uid], () => getDocs(query(collection(db, "books"), where("uid", "==", auth.currentUser.uid))))
+    const {data, isLoading, isSuccess} = useQuery(['readingList', auth.currentUser.uid], () => getDocs(query(collection(db, "books"), where("uid", "==", auth.currentUser.uid), where("list", "==", "readingList"))))
     return (
         <>
         {isLoading ? <FullPageSpinner/> :
@@ -21,7 +21,9 @@ function ReadingList() {
             }}>
         {
             data?.docs?.map(books => {
-                return <BookDetailCard bookId={books.data().bookId} key={books.data().bookId}/>
+                const bookId = books.data().bookId
+
+                return <BookDetailCard bookId={bookId} key={bookId} docId={books.id}/>
             })
         }
         </div>

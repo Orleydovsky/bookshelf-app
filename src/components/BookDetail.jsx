@@ -6,30 +6,32 @@ import { Link, useParams } from "react-router-dom";
 import { client } from '../utils/client';
 import { Button, Spinner } from './styledComponents';
 import { auth, db } from '../../firebase-config';
-import { collection, serverTimestamp, addDoc, getDocs, query, where } from "firebase/firestore";
+import { collection, serverTimestamp, addDoc, getDocs, query, where, doc, setDoc } from "firebase/firestore";
 import ReadingList from './ReadingList';
 
-function BookDetailCard({bookId}) {
-
-    const addToFinishedList = () => {
-        alert('Añadido a terminados')
-    }
+function BookDetailCard({bookId, docId}) {
 
     const {data} = useQuery(['books', auth.currentUser.uid], () => getDocs(query(collection(db, "books"), where("uid", "==", auth.currentUser.uid))))
-        const onReadingList = data?.docs.find(items => items.data().bookId === bookId)
+        const onList = data?.docs.find(items => items.data().bookId === bookId)
         
     const {data: bookIdData} = useQuery(['bookDetail', bookId], 
     () => client(`https://www.googleapis.com/books/v1/volumes/${bookId}?`))
 
-    const asyncThatTalksToServer = async () => {
-        const docRef = await addDoc(collection(db, "books"), {
+    const createDocumentOnReadingList = async () => {
+        !docId ?
+            await addDoc(collection(db, "books"), {
             uid: auth.currentUser.uid,
             createdAt: serverTimestamp(),
             bookId: bookId,
             list: 'readingList'
-        })
+        }) :
+        await setDoc(doc(db, "books", docId), {
+            list: 'finishedBooks'
+        }, 
+            {merge: true})
     } 
-    const {mutate, isLoading, isSuccess} = useMutation(asyncThatTalksToServer) 
+    const {mutate, isLoading, isSuccess} = useMutation(createDocumentOnReadingList) 
+
 
     const addToReadingList = () => {
         mutate()
@@ -56,13 +58,16 @@ function BookDetailCard({bookId}) {
                         <FaArrowLeft/>
                     </Button>
                 </Link>
-                {onReadingList || isSuccess ?
+                {onList || isSuccess ?
                 <div>
                 <Button css={{marginRight: '5px'}}>
                     <FaMinusCircle/>
                 </Button> 
                 <Button>
-                    <FaCheckCircle onClick={addToFinishedList}/>
+                {isLoading ?
+                    <Spinner css={{color: 'white'}}/> :
+                    <FaCheckCircle onClick={addToReadingList}/>
+                    }
                 </Button> 
                 </div>
                 : <Button>

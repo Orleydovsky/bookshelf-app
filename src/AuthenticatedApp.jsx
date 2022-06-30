@@ -37,17 +37,17 @@ function AuthenticatedApp() {
       border: '2.5px solid #6f6fff'
       }
     }}>
-         <NavLink to='/' activeClassName='active'>
+         <NavLink to='/' activeclassname='active'>
           <Button>
             Discover
           </Button>
          </NavLink>
-         <NavLink to='/readinglist' activeClassName='active'>
+         <NavLink to='/readinglist' activeclassname='active'>
           <Button>
             Reading list
           </Button>
          </NavLink>
-         <NavLink to='/finishedbooks' activeClassName='active'>
+         <NavLink to='/finishedbooks' activeclassname='active'>
           <Button>
              Finished books
           </Button>
