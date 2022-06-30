@@ -31,7 +31,7 @@ function ReadingList() {
             data?.docs?.map(books => {
                 const bookId = books.data().bookId
 
-                return <BookDetailCard bookId={bookId} key={bookId} docId={books.id} onReadingList={true}/>
+                return <BookDetailCard bookId={bookId} key={bookId} docId={books.id}/>
             }) 
         }
         </div>

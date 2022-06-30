@@ -1,21 +1,4 @@
 <h1>bookshelfApp!</h1>
 <h2>Hello world!</h2> 
-<p>bookshelf app is a small but very important project for me: This is my very first react app made from scrach! following up the workshop WorkShopName by Name</p>
-<p>I will be detailing my progress bellow</p>
-<ol>
-  <li>
-    <p><time datetime="2022-06-14">June 14</time> Created <a href="https://vitejs.dev/">vite app</a>, installed reach ui modal for the login window, and also the register window</p>
-  </li>
-  <li>
-    <p><time datetime="2022-06-15">June 15</time> Created vite app, installed reach ui</p>
-  </li>
-  <li>
-    <p><time datetime="2022-06-15">June 16</time> Created vite app, installed reach ui</p>
-  </li>
-  <li>
-    <p><time datetime="2022-06-15">June 17</time> Created vite app, installed reach ui</p>
-  </li>
-  <li>
-    <p><time datetime="2022-06-15">June 18</time> Created vite app, installed reach ui</p>
-  </li>
-</ol>
+<p>bookshelf app is a small but very important project for me: This is my very first react app made from scrach! following up the workshop WorkShopName by Kent C. Dodds</p>
+

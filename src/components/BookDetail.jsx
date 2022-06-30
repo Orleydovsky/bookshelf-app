@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { useState } from 'react';
-import { FaArrowLeft, FaPlusCircle, FaMinusCircle, FaCheckCircle, FaBook } from 'react-icons/fa';
+import { FaArrowLeft, FaPlusCircle, FaMinusCircle, FaCheckCircle, FaBook, FaBookDead, FaPlus } from 'react-icons/fa';
 import { useQuery, useMutation } from 'react-query';
 import { Link, useParams } from "react-router-dom";
 import { client } from '../utils/client';
@@ -11,35 +11,34 @@ import { queryClient } from '../main';
 
 function BookDetailCard({bookId, docId}) {
 
-    const {data} = useQuery(['books', auth.currentUser.uid], () => getDocs(query(collection(db, "books"), where("uid", "==", auth.currentUser.uid))))  
-    const onList = data?.docs.find(items => items.data().bookId === bookId)
-    // const thisBookList = () => {
-
-    // }    
+    const {data} = useQuery(['books', auth.currentUser.uid], () => getDocs(query(collection(db, "books"), where("uid", "==", auth.currentUser.uid), where("bookId", "==", bookId))))  
+    const [isListed, setIsListed] = useState(Boolean(data?.docs.find(items => items.data().bookId === bookId))) 
+    console.log(isListed)
+    const [isOnFinishedBooks, setIsOnFinishedBooks] = useState(Boolean(data?.docs.find(items => items.data().bookId === bookId && items.data().list === 'finishedBooks'))) 
     const {data: bookIdData} = useQuery(['bookDetail', bookId], 
     () => client(`https://www.googleapis.com/books/v1/volumes/${bookId}?`))
 
-    const createDocumentOnReadingList = async () => {
-        !docId ?
+    const createDocumentOnDataBase = async () => {
+        !isListed ?
             await addDoc(collection(db, "books"), {
             uid: auth.currentUser.uid, 
             createdAt: serverTimestamp(),
             bookId: bookId,
             list: 'readingList'
-        }) :
-
+        }) 
+        : 
         await setDoc(doc(db, "books", docId), {
             list: 'finishedBooks',
         }, 
             {merge: true}) 
     } 
-    const {mutate, isLoading, isSuccess} = useMutation(createDocumentOnReadingList, {
-        // onSettled: () => queryClient.invalidateQueries('readingList')
+    const {mutate, isLoading, isSuccess} = useMutation(createDocumentOnDataBase, {
+        onSettled: () => queryClient.invalidateQueries('books')
     })
 
     return (
         <div css={{
-            width: 'clamp(250px, 80%, 500px)',
+            width: 'clamp(250px, 80%, 500px)' ,
             marginTop: '15px',
             borderRadius: '15px',
             boxShadow: 'rgba(9, 30, 66, 0.25) 0px 4px 8px -2px, rgba(9, 30, 66, 0.08) 0px 0px 0px 1px',
@@ -57,27 +56,26 @@ function BookDetailCard({bookId, docId}) {
                     </Button>
                 </Link>
 
-                {onList || isSuccess ?
 
                 <div>
-                <Button css={{marginRight: '5px'}}>
-                    <FaMinusCircle/>
-                </Button> 
-                <Button>
-                {isLoading ?
-                    <Spinner css={{color: 'white'}}/> :
-                    <FaCheckCircle onClick={mutate}/>
-                    }
-                </Button> 
+                {
+                    isOnFinishedBooks ? 
+                    <>
+                        <Button><FaMinusCircle/></Button>
+                        <Button><FaBook/></Button>
+                    </> :
+                    isListed || isSuccess ? 
+                    <>
+                        <Button><FaMinusCircle/></Button>
+                        <Button><FaCheckCircle/></Button>
+                    </> 
+                    : 
+                    <Button>
+                    <FaPlusCircle/>
+                    </Button>
+                }
                 </div>
 
-                : <Button>
-                    {isLoading ?
-                    <Spinner css={{color: 'white'}}/> :
-                    <FaPlusCircle onClick={mutate}/>
-                    }
-                </Button>
-                }
             </div>
             <h2>{bookIdData?.volumeInfo.title} | {bookIdData?.volumeInfo.authors}</h2>
             <h3>{bookIdData?.volumeInfo.subtitle}</h3>
