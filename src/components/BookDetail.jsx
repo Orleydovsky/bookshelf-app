@@ -1,43 +1,41 @@
 /** @jsxImportSource @emotion/react */
 import { useState } from 'react';
-import { FaArrowLeft, FaPlusCircle, FaHeart, FaMinus, FaMinusCircle, FaCheckCircle } from 'react-icons/fa';
+import { FaArrowLeft, FaPlusCircle, FaMinusCircle, FaCheckCircle, FaBook } from 'react-icons/fa';
 import { useQuery, useMutation } from 'react-query';
 import { Link, useParams } from "react-router-dom";
 import { client } from '../utils/client';
 import { Button, Spinner } from './styledComponents';
 import { auth, db } from '../../firebase-config';
 import { collection, serverTimestamp, addDoc, getDocs, query, where, doc, setDoc } from "firebase/firestore";
-import ReadingList from './ReadingList';
+import { queryClient } from '../main';
 
 function BookDetailCard({bookId, docId}) {
 
-    const {data} = useQuery(['books', auth.currentUser.uid], () => getDocs(query(collection(db, "books"), where("uid", "==", auth.currentUser.uid))))
-        const onList = data?.docs.find(items => items.data().bookId === bookId)
-        
+    const {data} = useQuery(['books', auth.currentUser.uid], () => getDocs(query(collection(db, "books"), where("uid", "==", auth.currentUser.uid))))  
+    const onList = data?.docs.find(items => items.data().bookId === bookId)
+    // const thisBookList = () => {
+
+    // }    
     const {data: bookIdData} = useQuery(['bookDetail', bookId], 
     () => client(`https://www.googleapis.com/books/v1/volumes/${bookId}?`))
 
     const createDocumentOnReadingList = async () => {
         !docId ?
             await addDoc(collection(db, "books"), {
-            uid: auth.currentUser.uid,
+            uid: auth.currentUser.uid, 
             createdAt: serverTimestamp(),
             bookId: bookId,
             list: 'readingList'
         }) :
+
         await setDoc(doc(db, "books", docId), {
-            list: 'finishedBooks'
+            list: 'finishedBooks',
         }, 
-            {merge: true})
+            {merge: true}) 
     } 
-    const {mutate, isLoading, isSuccess} = useMutation(createDocumentOnReadingList) 
-
-
-    const addToReadingList = () => {
-        mutate()
-    }
-
-
+    const {mutate, isLoading, isSuccess} = useMutation(createDocumentOnReadingList, {
+        // onSettled: () => queryClient.invalidateQueries('readingList')
+    })
 
     return (
         <div css={{
@@ -58,7 +56,9 @@ function BookDetailCard({bookId, docId}) {
                         <FaArrowLeft/>
                     </Button>
                 </Link>
+
                 {onList || isSuccess ?
+
                 <div>
                 <Button css={{marginRight: '5px'}}>
                     <FaMinusCircle/>
@@ -66,14 +66,15 @@ function BookDetailCard({bookId, docId}) {
                 <Button>
                 {isLoading ?
                     <Spinner css={{color: 'white'}}/> :
-                    <FaCheckCircle onClick={addToReadingList}/>
+                    <FaCheckCircle onClick={mutate}/>
                     }
                 </Button> 
                 </div>
+
                 : <Button>
                     {isLoading ?
                     <Spinner css={{color: 'white'}}/> :
-                    <FaPlusCircle onClick={addToReadingList}/>
+                    <FaPlusCircle onClick={mutate}/>
                     }
                 </Button>
                 }
