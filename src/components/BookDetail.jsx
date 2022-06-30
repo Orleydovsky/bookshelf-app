@@ -13,7 +13,6 @@ function BookDetailCard({bookId, docId}) {
 
     const {data} = useQuery(['books', auth.currentUser.uid], () => getDocs(query(collection(db, "books"), where("uid", "==", auth.currentUser.uid), where("bookId", "==", bookId))))  
     const [isListed, setIsListed] = useState(Boolean(data?.docs.find(items => items.data().bookId === bookId))) 
-    console.log(isListed)
     const [isOnFinishedBooks, setIsOnFinishedBooks] = useState(Boolean(data?.docs.find(items => items.data().bookId === bookId && items.data().list === 'finishedBooks'))) 
     const {data: bookIdData} = useQuery(['bookDetail', bookId], 
     () => client(`https://www.googleapis.com/books/v1/volumes/${bookId}?`))
@@ -28,7 +27,7 @@ function BookDetailCard({bookId, docId}) {
         }) 
         : 
         await setDoc(doc(db, "books", docId), {
-            list: 'finishedBooks',
+            list: isOnFinishedBooks ? 'readingList' : 'finishedBooks',
         }, 
             {merge: true}) 
     } 
@@ -62,16 +61,16 @@ function BookDetailCard({bookId, docId}) {
                     isOnFinishedBooks ? 
                     <>
                         <Button><FaMinusCircle/></Button>
-                        <Button><FaBook/></Button>
+                        <Button onClick={mutate}><FaBook/></Button>
                     </> :
                     isListed || isSuccess ? 
                     <>
                         <Button><FaMinusCircle/></Button>
-                        <Button><FaCheckCircle/></Button>
+                        <Button onClick={mutate}><FaCheckCircle/></Button>
                     </> 
                     : 
                     <Button>
-                    <FaPlusCircle/>
+                    <FaPlusCircle onClick={mutate}/>
                     </Button>
                 }
                 </div>

@@ -5,7 +5,12 @@ import { ReactQueryDevtools } from "react-query/devtools";
 import App from './App'
 import './index.css'
 
-export const queryClient = new QueryClient()
+export const queryClient = new QueryClient({
+  defaultOptions: {
+    staleTime: Infinity,
+    cacheTime: Infinity,
+  }
+})
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>

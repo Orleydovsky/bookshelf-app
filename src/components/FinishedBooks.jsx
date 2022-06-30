@@ -10,7 +10,9 @@ import { FullPageSpinner } from './styledComponents';
 
 function FinishedBooks() {
     
-    const {data, isLoading, isSuccess} = useQuery(['finishedBooks', auth.currentUser.uid], () => getDocs(query(collection(db, "books"), where("uid", "==", auth.currentUser.uid), where("list", "==", "finishedBooks"))))
+    const {data, isLoading, isSuccess} = useQuery(['finishedBooks', auth.currentUser.uid], () => getDocs(query(collection(db, "books"), where("uid", "==", auth.currentUser.uid), where("list", "==", "finishedBooks"))),{
+        
+    })
     return (
         <>
         {isLoading ? <FullPageSpinner/> :
