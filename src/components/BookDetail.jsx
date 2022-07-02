@@ -11,30 +11,9 @@ import { queryClient } from '../main';
 
 function BookDetailCard({bookId, docId}) {
 
-    const {data} = useQuery(['books', auth.currentUser.uid], () => getDocs(query(collection(db, "books"), where("uid", "==", auth.currentUser.uid), where("bookId", "==", bookId))))  
-    const [isListed, setIsListed] = useState(Boolean(data?.docs.find(items => items.data().bookId === bookId))) 
-    const [isOnFinishedBooks, setIsOnFinishedBooks] = useState(Boolean(data?.docs.find(items => items.data().bookId === bookId && items.data().list === 'finishedBooks'))) 
     const {data: bookIdData} = useQuery(['bookDetail', bookId], 
     () => client(`https://www.googleapis.com/books/v1/volumes/${bookId}?`))
-
-    const createDocumentOnDataBase = async () => {
-        !isListed ?
-            await addDoc(collection(db, "books"), {
-            uid: auth.currentUser.uid, 
-            createdAt: serverTimestamp(),
-            bookId: bookId,
-            list: 'readingList'
-        }) 
-        : 
-        await setDoc(doc(db, "books", docId), {
-            list: isOnFinishedBooks ? 'readingList' : 'finishedBooks',
-        }, 
-            {merge: true}) 
-    } 
-    const {mutate, isLoading, isSuccess} = useMutation(createDocumentOnDataBase, {
-        onSettled: () => queryClient.invalidateQueries('books')
-    })
-
+    
     return (
         <div css={{
             width: 'clamp(250px, 80%, 500px)' ,
@@ -57,22 +36,9 @@ function BookDetailCard({bookId, docId}) {
 
 
                 <div>
-                {
-                    isOnFinishedBooks ? 
-                    <>
-                        <Button><FaMinusCircle/></Button>
-                        <Button onClick={mutate}><FaBook/></Button>
-                    </> :
-                    isListed || isSuccess ? 
-                    <>
-                        <Button><FaMinusCircle/></Button>
-                        <Button onClick={mutate}><FaCheckCircle/></Button>
-                    </> 
-                    : 
-                    <Button>
-                    <FaPlusCircle onClick={mutate}/>
-                    </Button>
-                }
+                
+                    hi
+                
                 </div>
 
             </div>
@@ -108,12 +74,26 @@ function BookDetailCard({bookId, docId}) {
 }
 
 function BookDetail() {
-
+    
     const {bookId} = useParams() 
-
+    
     return (
         <BookDetailCard bookId={bookId}/>
-    );
-}
+        );
+    }
+    
+    export {BookDetail, BookDetailCard}
 
-export {BookDetail, BookDetailCard}
+
+    // !isListed ?
+    //     await addDoc(collection(db, "books"), {
+    //     uid: auth.currentUser.uid, 
+    //     createdAt: serverTimestamp(),
+    //     bookId: bookId,
+    //     list: 'readingList'
+    // }) 
+    // : 
+    // await setDoc(doc(db, "books", docId), {
+    //     list: isOnFinishedBooks ? 'readingList' : 'finishedBooks',
+    // }, 
+    //     {merge: true}) 
