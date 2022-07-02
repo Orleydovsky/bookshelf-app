@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { useState } from 'react';
-import { FaArrowLeft, FaPlusCircle, FaMinusCircle, FaCheckCircle, FaBook, FaBookDead, FaPlus } from 'react-icons/fa';
+import { FaArrowLeft, FaPlusCircle, FaMinusCircle, FaCheckCircle, FaBook, FaBookDead, FaPlus, FaRegCheckCircle } from 'react-icons/fa';
 import { useQuery, useMutation } from 'react-query';
 import { Link, useParams } from "react-router-dom";
 import { client } from '../utils/client';
@@ -13,6 +13,31 @@ function BookDetailCard({bookId, docId}) {
 
     const {data: bookIdData} = useQuery(['bookDetail', bookId], 
     () => client(`https://www.googleapis.com/books/v1/volumes/${bookId}?`))
+
+    // ¿Is the book listed?
+    const {data: userBooks} = useQuery(
+        ['userBooks', auth.currentUser.uid], 
+        () => getDocs(query(collection(db, "books"), 
+            where("uid", "==", auth.currentUser.uid),
+            where("bookId", "==", bookId)
+        )))
+    const [isListed, setIsListed] = useState(Boolean(userBooks?.docs.length))
+    
+    //Talk to firebase
+    const talkToFirebase = async () => {
+        if(!isListed) {
+            await addDoc(collection(db, "books"), {
+                uid: auth.currentUser.uid, 
+                createdAt: serverTimestamp(),
+                bookId: bookId,
+                list: 'readingList'
+            }) 
+            setIsListed(!isListed)
+        }
+    }
+
+    const {mutate, isLoading} = useMutation(talkToFirebase)
+
     
     return (
         <div css={{
@@ -37,7 +62,14 @@ function BookDetailCard({bookId, docId}) {
 
                 <div>
                 
-                    hi
+                    {isListed ?
+                    <>
+                    <Button><FaMinusCircle/></Button>
+                    <Button><FaCheckCircle/></Button>
+                    </>
+                    :<Button onClick={mutate}>
+                    {isLoading ?<Spinner css={{color: 'white'}}/>: <FaPlusCircle/>}
+                    </Button>}
                 
                 </div>
 
