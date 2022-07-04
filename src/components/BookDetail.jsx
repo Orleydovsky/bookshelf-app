@@ -6,42 +6,57 @@ import { Link, useParams } from "react-router-dom";
 import { client } from '../utils/client';
 import { Button, Spinner } from './styledComponents';
 import { auth, db } from '../../firebase-config';
-import { collection, serverTimestamp, addDoc, getDocs, query, where, doc, setDoc } from "firebase/firestore";
+import { collection, serverTimestamp, addDoc, getDocs, query, where, doc, setDoc, deleteDoc } from "firebase/firestore";
 import { queryClient } from '../main';
 
-function BookDetailCard({bookId, docId}) {
 
+function BookDetailCard({bookId}) {
+    
     const {data: bookIdData} = useQuery(['bookDetail', bookId], 
     () => client(`https://www.googleapis.com/books/v1/volumes/${bookId}?`))
-
-    // ¿Is the book listed?
+    
     const {data: userBooks} = useQuery(
-        ['userBooks', auth.currentUser.uid], 
+        ['userBooks', auth.currentUser.uid, bookId], 
         () => getDocs(query(collection(db, "books"), 
             where("uid", "==", auth.currentUser.uid),
             where("bookId", "==", bookId)
         )))
-    const [isListed, setIsListed] = useState(Boolean(userBooks?.docs.length))
-    
-    //Talk to firebase
+        
+    const docId = userBooks?.docs.length ? userBooks?.docs[0].id : 'fakedocid'
+
     const talkToFirebase = async () => {
-        if(!isListed) {
+        if(!userBooks?.docs.length) {
             await addDoc(collection(db, "books"), {
                 uid: auth.currentUser.uid, 
                 createdAt: serverTimestamp(),
                 bookId: bookId,
                 list: 'readingList'
             }) 
-            setIsListed(!isListed)
         }
+        await setDoc(doc(db, "books", docId), {
+            list: userBooks?.docs[0].data().list == 'finishedBooks' ? 'readingList' : 'finishedBooks',
+        }, 
+            {merge: true})
     }
 
-    const {mutate, isLoading} = useMutation(talkToFirebase)
+    const deleteFromDataBase = async () => {
+        await deleteDoc(doc(db, "books", docId))
+        queryClient.invalidateQueries('finishedBooks')
+        queryClient.invalidateQueries('readingList')
+    }
 
-    
+    const {mutate, isLoading} = useMutation(talkToFirebase, {
+        onSuccess: () => {
+            queryClient.invalidateQueries('finishedBooks')
+            queryClient.invalidateQueries('readingList')
+            queryClient.invalidateQueries('userBooks')
+        }
+    })
+
+     
     return (
         <div css={{
-            width: 'clamp(250px, 80%, 500px)' ,
+            width: 'clamp(250px, 80%, 500px)',
             marginTop: '15px',
             borderRadius: '15px',
             boxShadow: 'rgba(9, 30, 66, 0.25) 0px 4px 8px -2px, rgba(9, 30, 66, 0.08) 0px 0px 0px 1px',
@@ -58,19 +73,29 @@ function BookDetailCard({bookId, docId}) {
                         <FaArrowLeft/>
                     </Button>
                 </Link>
-
-
                 <div>
-                
-                    {isListed ?
-                    <>
-                    <Button><FaMinusCircle/></Button>
-                    <Button><FaCheckCircle/></Button>
-                    </>
-                    :<Button onClick={mutate}>
-                    {isLoading ?<Spinner css={{color: 'white'}}/>: <FaPlusCircle/>}
-                    </Button>}
-                
+
+                {
+                userBooks?.docs.length ? 
+                userBooks?.docs[0].data().list == 'finishedBooks' ? 
+                <>
+                    <Button onClick={deleteFromDataBase}><FaMinusCircle/></Button>
+                    <Button onClick={mutate}>
+                    {isLoading ? <Spinner css={{color: 'white'}}/> : <FaBook/>}
+                    </Button>
+                </>
+                : 
+                <>
+                    <Button onClick={deleteFromDataBase}><FaMinusCircle/></Button>
+                    <Button onClick={mutate}>
+                    {isLoading ? <Spinner css={{color: 'white'}}/> : <FaCheckCircle/>}
+                    </Button>
+                </>  
+                : 
+                <Button onClick={mutate}>
+                    {isLoading ? <Spinner css={{color: 'white'}}/> : <FaPlusCircle/>}
+                </Button>
+                }
                 </div>
 
             </div>
@@ -107,7 +132,8 @@ function BookDetailCard({bookId, docId}) {
 
 function BookDetail() {
     
-    const {bookId} = useParams() 
+    const {bookId} = useParams()
+
     
     return (
         <BookDetailCard bookId={bookId}/>
@@ -115,17 +141,3 @@ function BookDetail() {
     }
     
     export {BookDetail, BookDetailCard}
-
-
-    // !isListed ?
-    //     await addDoc(collection(db, "books"), {
-    //     uid: auth.currentUser.uid, 
-    //     createdAt: serverTimestamp(),
-    //     bookId: bookId,
-    //     list: 'readingList'
-    // }) 
-    // : 
-    // await setDoc(doc(db, "books", docId), {
-    //     list: isOnFinishedBooks ? 'readingList' : 'finishedBooks',
-    // }, 
-    //     {merge: true}) 
