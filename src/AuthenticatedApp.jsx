@@ -21,7 +21,7 @@ function AuthenticatedApp() {
       setQuery(e.target.elements.search.value)
     }
 
-    const logout = async () => {
+    const logout = async (e) => {
         queryClient.removeQueries()
         await signOut(auth)
     }

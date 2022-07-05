@@ -46,7 +46,6 @@ const buttonVariants = {
     height: '40px',
     border: 'none',
     borderRadius: '50%',
-    cursor: 'pointer',
     fontSize: '16px',
     transition: '0.15s',
     color: 'white',

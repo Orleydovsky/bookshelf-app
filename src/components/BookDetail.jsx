@@ -29,7 +29,7 @@ function BookDetailCard({bookId, docId, userBook}) {
     
 
     const talkToFirebase = async (e) => {
-        console.log(e.target.id)
+        console.log(e.target)
         if(e.target.id == 'delete') {
             await deleteDoc(doc(db, "books", docId))
         } else {
@@ -52,7 +52,6 @@ function BookDetailCard({bookId, docId, userBook}) {
     const {mutate, isLoading} = useMutation(talkToFirebase, {
         onSuccess: () => {
             queryClient.invalidateQueries()
-
         }
     })
 
@@ -85,12 +84,12 @@ function BookDetailCard({bookId, docId, userBook}) {
                 </RoundButton> :
                 userBook.finishedOn ? 
                 <>
-                    <RoundButton id='delete' onClick={mutate}><FaMinusCircle/></RoundButton>
+                    <RoundButton onClick={mutate}><FaMinusCircle/></RoundButton>
                     <RoundButton onClick={mutate}><FaBook/></RoundButton>
                 </>
                 : 
                 <>
-                    <RoundButton id='delete' onClick={mutate}><FaMinusCircle/></RoundButton>
+                    <RoundButton onClick={mutate}><FaMinusCircle/></RoundButton>
                     <RoundButton onClick={mutate}><FaCheckCircle/></RoundButton>
                 </>}
                 </div>
