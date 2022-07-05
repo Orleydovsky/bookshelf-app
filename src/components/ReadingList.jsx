@@ -10,7 +10,13 @@ import { Link } from 'react-router-dom';
 
 function ReadingList() {
     
-    const {data, isLoading} = useQuery(['readingList', auth.currentUser.uid], () => getDocs(query(collection(db, "books"), where("uid", "==", auth.currentUser.uid), where("list", "==", "readingList"))))
+    const {data, isLoading} = useQuery(
+        ['readingList', auth.currentUser.uid], 
+        () => getDocs(query(collection(db, "books"), 
+            where("uid", "==", auth.currentUser.uid), 
+            where("list", "==", "readingList"
+        ))))
+
     return (
         <>
         {isLoading ? <FullPageSpinner/> :
@@ -30,7 +36,6 @@ function ReadingList() {
             </p> :
             data?.docs?.map(books => {
                 const bookId = books.data().bookId
-
                 return <BookDetailCard bookId={bookId} key={bookId} docId={books.id}/>
             }) 
         }

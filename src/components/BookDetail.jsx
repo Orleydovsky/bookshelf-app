@@ -14,9 +14,16 @@ function BookDetail({userBooks}) {
     return (<BookDetailCard bookId={bookId} userBooks={userBooks}/>);
 }
 
-function BookDetailCard({bookId, userBooks}) {
+function BookDetailCard({bookId, userBooks, docId}) {
 
-    const [bookList, setBookList] = useState('notListed')
+    const defineInitialState = (bookId, userBooks) => {
+        if(Boolean(userBooks?.docs.find(books => books.data().bookId == bookId))) return 'notListed'
+        if(Boolean(userBooks?.docs.find(books => books.data().bookId == bookId && books.data().list === 'finishedBooks'))) return 'finishedBooks'
+        return 'readingList'
+    }
+    
+    const [bookList, setBookList] = useState(defineInitialState())
+
     const notListed = bookList === 'notListed'
     const onReadingList = bookList === 'readingList'
     const onFinishedBooks = bookList === 'finishedBooks'
@@ -27,18 +34,27 @@ function BookDetailCard({bookId, userBooks}) {
 
     const talkToFirebase = async () => {
         if(notListed) {
-            await addDoc(collection(db, "books"), {
+            const docRef = await addDoc(collection(db, "books"), {
                 uid: auth.currentUser.uid, 
                 createdAt: serverTimestamp(),
                 bookId: bookId,
                 list: 'readingList'
             }) 
+            docId = docRef.id
             setBookList('readingList')
-        }
-        await setDoc(doc(db, "books", docId), {
-            list: onFinishedBooks ? 'readingList' : 'finishedBooks',
-        }, 
-            {merge: true})
+            } else if (onFinishedBooks) {
+                await setDoc(doc(db, "books", docId), {
+                    list: 'readingList',
+                }, 
+                    {merge: true})
+                setBookList('readingList')
+            } else if (onReadingList) {
+                await setDoc(doc(db, "books", docId), {
+                    list: 'finishedBooks',
+                }, 
+                {merge: true})
+                setBookList('finishedBooks')
+            }
     }
 
     const deleteFromDataBase = async () => {
@@ -78,26 +94,26 @@ function BookDetailCard({bookId, userBooks}) {
                 <div>
 
                 {
-                isListed ? 
-                isFinished ? 
+                notListed ? 
+                <Button onClick={mutate}>
+                    {isLoading ? <Spinner css={{color: 'white'}}/> : <FaPlusCircle/>}
+                </Button> :
+                onFinishedBooks ? 
                 <>
                     <Button onClick={deleteFromDataBase}><FaMinusCircle/></Button>
                     <Button onClick={mutate}>
                     {isLoading ? <Spinner css={{color: 'white'}}/> : <FaBook/>}
                     </Button>
                 </>
-                : 
+                : onReadingList ? 
                 <>
                     <Button onClick={deleteFromDataBase}><FaMinusCircle/></Button>
                     <Button onClick={mutate}>
                     {isLoading ? <Spinner css={{color: 'white'}}/> : <FaCheckCircle/>}
                     </Button>
                 </>  
-                : 
-                <Button onClick={mutate}>
-                    {isLoading ? <Spinner css={{color: 'white'}}/> : <FaPlusCircle/>}
-                </Button>
-                }
+                : null
+                } 
                 </div>
 
             </div>
