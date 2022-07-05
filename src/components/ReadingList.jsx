@@ -14,8 +14,8 @@ function ReadingList() {
         ['readingList', auth.currentUser.uid], 
         () => getDocs(query(collection(db, "books"), 
             where("uid", "==", auth.currentUser.uid), 
-            where("list", "==", "readingList"
-        ))))
+            where("finishedOn", "==", null)
+        )))
 
     return (
         <>
@@ -36,7 +36,7 @@ function ReadingList() {
             </p> :
             data?.docs?.map(books => {
                 const bookId = books.data().bookId
-                return <BookDetailCard bookId={bookId} key={bookId} docId={books.id}/>
+                return <BookDetailCard bookId={bookId} key={bookId} docId={books.id} userBook={books.data()}/>
             }) 
         }
         </div>

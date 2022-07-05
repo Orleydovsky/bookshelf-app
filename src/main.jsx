@@ -6,11 +6,11 @@ import App from './App'
 import './index.css'
 
 export const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      refetchOnWindowFocus: false,
-    }
-  }
+  // defaultOptions: {
+  //   queries: {
+  //     refetchOnWindowFocus: false,
+  //   }
+  // }
 })
 
 ReactDOM.createRoot(document.getElementById('root')).render(

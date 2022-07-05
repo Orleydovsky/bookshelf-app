@@ -23,12 +23,6 @@ function AuthenticatedApp() {
         queryClient.removeQueries()
         await signOut(auth)
     }
-
-    const {data: userBooks} = useQuery(
-      ['userBooks', auth.currentUser.uid], 
-      () => getDocs(collection(db, "books"), 
-          where("uid", "==", auth.currentUser.uid),
-      ))
       
     return (
       <div css={{
@@ -39,7 +33,7 @@ function AuthenticatedApp() {
         }}>
       <Header logout={logout}/>
       <NavBar/>
-      <RoutesScreen handleSearch={handleSearch} query={query} userBooks={userBooks}/>
+      <RoutesScreen handleSearch={handleSearch} query={query}/>
     </div>
     )
 }

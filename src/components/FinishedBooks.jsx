@@ -10,7 +10,11 @@ import { Link } from 'react-router-dom';
 
 function FinishedBooks() {
     
-    const {data, isLoading} = useQuery(['finishedBooks', auth.currentUser.uid], () => getDocs(query(collection(db, "books"), where("uid", "==", auth.currentUser.uid), where("list", "==", "finishedBooks"))))
+    const {data, isLoading} = useQuery(
+        ['finishedBooks', auth.currentUser.uid], 
+        () => getDocs(query(collection(db, "books"), 
+            where("uid", "==", auth.currentUser.uid), 
+            where("finishedOn", "!=", null))))
     return (
         <>
         {isLoading ? <FullPageSpinner/> :
@@ -20,7 +24,7 @@ function FinishedBooks() {
             alignItems: 'center',
             }}>
         {
-            data.empty ?
+            data?.empty ?
             <p css={{
                 width: '60vw',
                 fontSize: '1.25em'
@@ -31,7 +35,7 @@ function FinishedBooks() {
             data?.docs?.map(books => {
                 const bookId = books.data().bookId
 
-                return <BookDetailCard bookId={bookId} key={bookId} docId={books.id}/>
+                return <BookDetailCard bookId={bookId} key={bookId} docId={books.id} userBook={books.data()}/>
             }) 
         }
         </div>
