@@ -9,6 +9,8 @@ import {Header} from "./components/Header"
 import {NavBar} from "./components/NavBar"
 import {RoutesScreen} from "./components/RoutesScreen"
 import { getDocs, query, collection, where } from "firebase/firestore";
+import { RoundButton } from "./components/styledComponents";
+import { FaBook } from "react-icons/fa";
 
 function AuthenticatedApp() {
 

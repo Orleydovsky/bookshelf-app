@@ -39,6 +39,27 @@ const buttonVariants = {
       boxShadow: 'rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px'
     }
   }, ({variant = 'primary'}) => buttonVariants[variant])
+
+  const RoundButton = styled.button({
+
+    width: '40px',
+    height: '40px',
+    border: 'none',
+    borderRadius: '50%',
+    cursor: 'pointer',
+    fontSize: '16px',
+    transition: '0.15s',
+    color: 'white',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+
+
+    '&:hover' : {
+      boxShadow: 'rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px'
+    }
+  }, ({variant = 'primary'}) => buttonVariants[variant])
   
   const Input = styled.input({
     backgroundColor: '#f6f6f6',
@@ -93,6 +114,7 @@ const buttonVariants = {
     Input, 
     FormGroup, 
     CloseButton, 
+    RoundButton,
     Spinner,
     FullPageSpinner,
   }

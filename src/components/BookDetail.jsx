@@ -3,7 +3,7 @@ import { FaArrowLeft, FaPlusCircle, FaMinusCircle, FaCheckCircle, FaBook, FaBook
 import { useQuery, useMutation } from 'react-query';
 import { Link, useParams, useRoutes } from "react-router-dom";
 import { client } from '../utils/client';
-import { Button, Spinner } from './styledComponents';
+import { Button, RoundButton, Spinner } from './styledComponents';
 import { auth, db } from '../../firebase-config';
 import { collection, serverTimestamp, addDoc, getDocs, query, where, doc, setDoc, deleteDoc } from "firebase/firestore";
 import { queryClient } from '../main';
@@ -28,37 +28,31 @@ function BookDetailCard({bookId, docId, userBook}) {
     () => client(`https://www.googleapis.com/books/v1/volumes/${bookId}?`))
     
 
-    const talkToFirebase = async () => {
-        if(!docId) {
-            const docRef = await addDoc(collection(db, "books"), {
-                uid: auth.currentUser.uid, 
-                finishedOn: null,
-                bookId: bookId,
-            })
-            docId = docRef.id
-            // queryClient.invalidateQueries('userBooks')
-        } 
-        await setDoc(doc(db, "books", docId), {
-            finishedOn: userBook.finishedOn ? null : serverTimestamp(),
-        }, 
-            {merge: true})
-    }
-
-    const deleteFromDataBase = async () => {
-        await deleteDoc(doc(db, "books", docId))
-        queryClient.invalidateQueries('finishedBooks')
-        queryClient.invalidateQueries('readingList')
-        queryClient.invalidateQueries('bookDetail')
-        queryClient.invalidateQueries('userBooks')
-
+    const talkToFirebase = async (e) => {
+        console.log(e.target.id)
+        if(e.target.id == 'delete') {
+            await deleteDoc(doc(db, "books", docId))
+        } else {
+            if(!docId) {
+                const docRef = await addDoc(collection(db, "books"), {
+                    uid: auth.currentUser.uid, 
+                    finishedOn: null,
+                    bookId: bookId,
+                })
+                docId = docRef.id
+                queryClient.invalidateQueries('userBooks')
+            }
+            await setDoc(doc(db, "books", docId), {
+                finishedOn: userBook.finishedOn ? null : serverTimestamp(),
+            }, 
+                {merge: true})
+        }
     }
 
     const {mutate, isLoading} = useMutation(talkToFirebase, {
         onSuccess: () => {
-            queryClient.invalidateQueries('userBooks')
-            queryClient.invalidateQueries('finishedBooks')
-            queryClient.invalidateQueries('readingList')
-            queryClient.invalidateQueries('bookDetail')
+            queryClient.invalidateQueries()
+
         }
     })
 
@@ -78,28 +72,26 @@ function BookDetailCard({bookId, docId, userBook}) {
             }}>
 
                 <Link to={'/'}>
-                    <Button>
+                    <RoundButton>
                         <FaArrowLeft/>
-                    </Button>
+                    </RoundButton>
                 </Link>
-                <div>
-                {!docId ? 
-                <Button onClick={mutate}>
-                    {isLoading ? <Spinner css={{color: 'white'}}/> : <FaPlusCircle/>}
-                </Button> :
+                <div css={{display: 'flex', flexDirection:'row'}}>
+                {
+                isLoading ? <Spinner/> :
+                !docId ? 
+                <RoundButton onClick={mutate}>
+                    <FaPlusCircle/>
+                </RoundButton> :
                 userBook.finishedOn ? 
                 <>
-                    <Button onClick={deleteFromDataBase}><FaMinusCircle/></Button>
-                    <Button onClick={mutate}>
-                    {isLoading ? <Spinner css={{color: 'white'}}/> : <FaBook/>}
-                    </Button>
+                    <RoundButton id='delete' onClick={mutate}><FaMinusCircle/></RoundButton>
+                    <RoundButton onClick={mutate}><FaBook/></RoundButton>
                 </>
                 : 
                 <>
-                    <Button onClick={deleteFromDataBase}><FaMinusCircle/></Button>
-                    <Button onClick={mutate}>
-                    {isLoading ? <Spinner css={{color: 'white'}}/> : <FaCheckCircle/>}
-                    </Button>
+                    <RoundButton id='delete' onClick={mutate}><FaMinusCircle/></RoundButton>
+                    <RoundButton onClick={mutate}><FaCheckCircle/></RoundButton>
                 </>}
                 </div>
 

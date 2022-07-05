@@ -1,10 +1,11 @@
 /** @jsxImportSource @emotion/react */
-import { Button } from '../components/styledComponents';
-import { FaSignOutAlt, FaUser } from "react-icons/fa";
+import { Button, RoundButton } from '../components/styledComponents';
+import { FaBook, FaSignOutAlt, FaUser } from "react-icons/fa";
 import { auth } from "../../firebase-config";
 import { Link } from 'react-router-dom';
 
 export function Header({logout}) {
+
   return <div css={{
     display: 'flex',
     flexDirection: 'row',
@@ -30,7 +31,6 @@ export function Header({logout}) {
           Welcome, <br />
           {auth.currentUser.email.split('@').slice(0, 1).join()}!
       </div>
-
           <Button onClick={logout}>
               <FaSignOutAlt />
           </Button>
