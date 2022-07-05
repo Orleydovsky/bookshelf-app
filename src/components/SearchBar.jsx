@@ -4,6 +4,7 @@ import { Spinner } from "./styledComponents";
 
 export default function SearchBar({handleSearch, isError, isLoading}) {
   return (
+    <>
     <form onSubmit={handleSearch} css={{
         border: `5px solid ${isError ? 'red' : '#8080ff'}`,
         display: 'flex',
@@ -24,7 +25,15 @@ export default function SearchBar({handleSearch, isError, isLoading}) {
             }
           }}/>
             {isLoading ? <Spinner /> : isError ? <FaTimes color='red' /> : <FaSearch color='#8080ff' />}
-        </form>
+    </form>
+
+        {isError ? 
+          <div>
+            <p>Nothing found</p>
+            <pre>{error.message}</pre>
+          </div> 
+        : null}
+    </>
         )
     }
   

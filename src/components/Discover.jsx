@@ -18,9 +18,6 @@ function Discover({query, handleSearch}) {
     refetchOnMount: false
   })
   
-
-
-
     return (
         <div css={{
           width: '60%',
@@ -30,12 +27,6 @@ function Discover({query, handleSearch}) {
         }}>
         <h2>Discover books today!</h2>
         <SearchBar handleSearch={handleSearch} isError={isError} isLoading={isLoading}  />
-        {isError ? 
-            <div>
-                <p>Nothing found</p>
-                <pre>{error.message}</pre>
-            </div> 
-        : null}
         {isSuccess ? (
         data?.items?.length ? (
           <div css={{

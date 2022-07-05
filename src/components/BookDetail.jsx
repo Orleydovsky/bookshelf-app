@@ -9,32 +9,34 @@ import { auth, db } from '../../firebase-config';
 import { collection, serverTimestamp, addDoc, getDocs, query, where, doc, setDoc, deleteDoc } from "firebase/firestore";
 import { queryClient } from '../main';
 
+function BookDetail({userBooks}) {
+    const {bookId} = useParams()
+    return (<BookDetailCard bookId={bookId} userBooks={userBooks}/>);
+}
 
-function BookDetailCard({bookId}) {
-    
+function BookDetailCard({bookId, userBooks}) {
+
+    const [bookList, setBookList] = useState('notListed')
+    const notListed = bookList === 'notListed'
+    const onReadingList = bookList === 'readingList'
+    const onFinishedBooks = bookList === 'finishedBooks'
+
     const {data: bookIdData} = useQuery(['bookDetail', bookId], 
     () => client(`https://www.googleapis.com/books/v1/volumes/${bookId}?`))
     
-    const {data: userBooks} = useQuery(
-        ['userBooks', auth.currentUser.uid, bookId], 
-        () => getDocs(query(collection(db, "books"), 
-            where("uid", "==", auth.currentUser.uid),
-            where("bookId", "==", bookId)
-        )))
-        
-    const docId = userBooks?.docs.length ? userBooks?.docs[0].id : 'fakedocid'
 
     const talkToFirebase = async () => {
-        if(!userBooks?.docs.length) {
+        if(notListed) {
             await addDoc(collection(db, "books"), {
                 uid: auth.currentUser.uid, 
                 createdAt: serverTimestamp(),
                 bookId: bookId,
                 list: 'readingList'
             }) 
+            setBookList('readingList')
         }
         await setDoc(doc(db, "books", docId), {
-            list: userBooks?.docs[0].data().list == 'finishedBooks' ? 'readingList' : 'finishedBooks',
+            list: onFinishedBooks ? 'readingList' : 'finishedBooks',
         }, 
             {merge: true})
     }
@@ -76,8 +78,8 @@ function BookDetailCard({bookId}) {
                 <div>
 
                 {
-                userBooks?.docs.length ? 
-                userBooks?.docs[0].data().list == 'finishedBooks' ? 
+                isListed ? 
+                isFinished ? 
                 <>
                     <Button onClick={deleteFromDataBase}><FaMinusCircle/></Button>
                     <Button onClick={mutate}>
@@ -130,14 +132,5 @@ function BookDetailCard({bookId}) {
     )
 }
 
-function BookDetail() {
     
-    const {bookId} = useParams()
-
-    
-    return (
-        <BookDetailCard bookId={bookId}/>
-        );
-    }
-    
-    export {BookDetail, BookDetailCard}
+export {BookDetail, BookDetailCard}
