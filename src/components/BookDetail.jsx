@@ -8,6 +8,7 @@ import { auth, db } from '../../firebase-config';
 import { collection, serverTimestamp, addDoc, getDocs, query, where, doc, setDoc, deleteDoc } from "firebase/firestore";
 import { queryClient } from '../main';
 import { useState } from 'react';
+import { ButtonSet } from './ButtonSet';
 
 function BookDetail() {
     const {bookId} = useParams()
@@ -21,11 +22,25 @@ function BookDetail() {
     <BookDetailCard bookId={bookId} docId={userBooks?.empty ? null : userBooks?.docs[0].id } userBook={userBooks?.empty ? null: userBooks?.docs[0].data()}/>
     );
 }
+
+
+
  
 function BookDetailCard({bookId, docId, userBook}) {
 
-    const {data: bookIdData} = useQuery(['bookDetail', bookId], 
-    () => client(`https://www.googleapis.com/books/v1/volumes/${bookId}?`))
+    // const {data: bookIdData} = useQuery(['bookDetail', bookId], 
+    // () => client(`https://www.googleapis.com/books/v1/volumes/${bookId}?`))
+
+    const bookIdData = {
+        volumeInfo: {
+         title: 'The adventures of Martha the Martian',
+         authors: 'J.P. Mejía',
+         description: 'Marvin was never named in the original shorts – he was referred to as the Commander of Flying Saucer X-2 in The Hasty Hare in 1952, and sometimes referred to as "Antwerp" in promotional material or other projects like the live stage show version of Bugs Bunny in Space. However, in 1979, once the character attracted merchandising interest, the name "Marvin" was selected for The Bugs Bunny/Road Runner Movie.[4] Marvin appeared in five theatrical cartoons from 1948 to 1963:',
+         imageLinks: {
+            thumbnail: 'https://i.pinimg.com/originals/73/b5/7a/73b57a5169ef151b7f8ce24ef51eae7a.jpg'
+         }
+        }
+    }
     
 
     const talkToFirebase = async (e) => {
@@ -43,17 +58,18 @@ function BookDetailCard({bookId, docId, userBook}) {
                 queryClient.invalidateQueries('userBooks')
             }
             await setDoc(doc(db, "books", docId), {
-                finishedOn: userBook.finishedOn ? null : serverTimestamp(),
+                finishedOn: userBook?.finishedOn ? null : serverTimestamp(),
             }, 
                 {merge: true})
         }
     }
 
-    const {mutate, isLoading} = useMutation(talkToFirebase, {
+    const {mutate, isLoading} = useMutation(
+        talkToFirebase, 
+        {
         onSuccess: () => {
             queryClient.invalidateQueries()
-        }
-    })
+        }})
 
      
     return (
@@ -93,6 +109,7 @@ function BookDetailCard({bookId, docId, userBook}) {
                     <RoundButton onClick={mutate}><FaCheckCircle/></RoundButton>
                 </>}
                 </div>
+                <ButtonSet docId={docId} user={auth.currentUser.uid} bookId={bookId} userBook={userBook}/>
 
             </div>
             <h2>{bookIdData?.volumeInfo.title} | {bookIdData?.volumeInfo.authors}</h2>
