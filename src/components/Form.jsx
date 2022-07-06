@@ -26,7 +26,7 @@ export function Form({ onSubmit, buttonText, error, loading }) {
                 <Input id="password" type="password" placeholder="Password" />
             </FormGroup>
             <FormGroup><br />
-            <Button type="submit">{loading ? <Spinner css={{color: 'white'}}/> : buttonText}</Button>
+            <Button type="submit">{loading ? <Spinner/> : buttonText}</Button>
             {error ?  <p>{error.message.split(': ')[1]}</p> : null}
             </FormGroup>
         </form>
