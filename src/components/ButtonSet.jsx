@@ -1,4 +1,6 @@
 /** @jsxImportSource @emotion/react */
+import Tooltip from "@reach/tooltip"
+import "@reach/tooltip/styles.css";
 import { addDoc, collection, deleteDoc, doc, serverTimestamp, setDoc } from "firebase/firestore"
 import { FaBook, FaCheckCircle, FaMinusCircle, FaPlusCircle } from "react-icons/fa"
 import { useMutation } from "react-query"
@@ -15,9 +17,11 @@ function DeleteBookButton({docId}) {
         })
 
     return(
+        <Tooltip label="Delete">
         <RoundButton onClick={mutate}>
             {isLoading ? <Spinner/> : <FaMinusCircle/>}
         </RoundButton>
+        </Tooltip>
     )
 }
 
@@ -33,9 +37,11 @@ function AddBookButton({user, bookId}) {
         }
     })
     return(
-        <RoundButton onClick={mutate}>
-            {isLoading ? <Spinner/> : <FaPlusCircle/>}
-        </RoundButton> 
+        <Tooltip label="Add to reading list">
+            <RoundButton onClick={mutate}>
+                {isLoading ? <Spinner/> : <FaPlusCircle/>}
+            </RoundButton> 
+        </Tooltip>
     )
 }
 function SwitchBookButton({docId, userBook}) {
@@ -55,12 +61,16 @@ function SwitchBookButton({docId, userBook}) {
             gridTemplateColumns: 'repeat(2, minmax(0, 1fr))',
             gridGap: '5px',
             }}>
-            <RoundButton>
-                <DeleteBookButton docId={docId}/>
-            </RoundButton> 
-            <RoundButton onClick={mutate}>
-                {isLoading? <Spinner/> : isFinished ? <FaBook/> : <FaCheckCircle/>}
-            </RoundButton>
+            <DeleteBookButton docId={docId}/>
+            <Tooltip label={isFinished?'Unmark as read':'Mark as read'}>
+                <RoundButton onClick={mutate}>
+                    {isLoading? 
+                    <Spinner/> : 
+                    isFinished ? 
+                    <FaBook/>: 
+                    <FaCheckCircle/>}
+                </RoundButton>
+            </Tooltip>
         </div>
     )
 }

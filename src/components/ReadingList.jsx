@@ -9,7 +9,7 @@ import { FullPageSpinner } from './styledComponents';
 import { Link } from 'react-router-dom';
 
 function ReadingList() {
-    
+
     const {data, isLoading} = useQuery(
         ['readingList', auth.currentUser.uid], 
         () => getDocs(query(collection(db, "books"), 

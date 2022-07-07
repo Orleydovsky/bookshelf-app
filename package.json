@@ -13,6 +13,7 @@
     "@emotion/styled": "^11.9.3",
     "@popperjs/core": "^2.11.5",
     "@reach/dialog": "^0.17.0",
+    "@reach/tooltip": "^0.17.0",
     "@react-query-firebase/auth": "^0.3.4",
     "bootstrap": "^5.2.0-beta1",
     "firebase": "^9.8.3",
