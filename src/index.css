@@ -8,7 +8,9 @@ input:-webkit-autofill:focus,
 input:-webkit-autofill:active{
     -webkit-box-shadow: 0 0 0 30px white inset !important;
 }
+
 body {
+  color: #8080ff;
   margin: 0;
   font-family: 'Varela Round', sans-serif;
   -webkit-font-smoothing: antialiased;

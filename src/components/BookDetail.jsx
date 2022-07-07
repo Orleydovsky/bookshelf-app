@@ -30,7 +30,7 @@ function BookDetailCard({bookId, docId, userBook}) {
             width: 'clamp(250px, 80%, 500px)',
             marginTop: '15px',
             borderRadius: '15px',
-            boxShadow: 'rgba(9, 30, 66, 0.25) 0px 4px 8px -2px, rgba(9, 30, 66, 0.08) 0px 0px 0px 1px',
+            boxShadow: 'rgba(0, 0, 0, 0.16) 0px 1px 4px, rgb(128, 128, 255) 0px 0px 0px 3px',
             padding: '15px',
             }}>
             <div css={{

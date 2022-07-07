@@ -2,6 +2,17 @@
 import styled from '@emotion/styled/macro'
 import { FaSpinner } from "react-icons/fa";
 import {keyframes} from '@emotion/react'
+import  { Dialog } from '@reach/dialog';
+import "@reach/dialog/styles.css";
+
+
+const DialogWindow = styled(Dialog)({
+  width: 'clamp(200px, 90%, 450px)',
+  borderRadius: '15px',
+  paddingBottom: '3.5em',
+  boxShadow: '0 10px 30px -5px rgba(0, 0, 0, 0.2)',
+  margin: '20vh auto',
+})
 
 const spin = keyframes({
   '0%': {transform: 'rotate(0deg)'},
@@ -78,7 +89,6 @@ const buttonVariants = {
     opacity: '0.6',
     border: 'none',
     cursor: 'pointer',
-    position: 'absolute',
     right: '15px',
     top: '15px',
     padding: '10px 15px',
@@ -115,4 +125,5 @@ const buttonVariants = {
     RoundButton,
     Spinner,
     FullPageSpinner,
+    DialogWindow
   }
