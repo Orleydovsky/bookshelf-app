@@ -7,7 +7,7 @@ import "@reach/dialog/styles.css";
 
 
 const DialogWindow = styled(Dialog)({
-  width: 'clamp(200px, 90%, 450px)',
+  width: 'clamp(200px, 90%, 300px)',
   borderRadius: '15px',
   paddingBottom: '3.5em',
   boxShadow: '0 10px 30px -5px rgba(0, 0, 0, 0.2)',
@@ -76,21 +76,19 @@ const buttonVariants = {
     borderRadius: '5px',
     padding: '10px 10px',
   })
-  
+
   const FormGroup = styled.div({
     display: 'flex',
     flexDirection: 'column',
     marginBottom: '10px',
   })
-
+  
   const CloseButton = styled.button({
     boxSizing: 'border-box',
     backgroundColor: '#f6f6f6',
     opacity: '0.6',
     border: 'none',
     cursor: 'pointer',
-    right: '15px',
-    top: '15px',
     padding: '10px 15px',
     borderRadius: '15px',
     transition: '0.3s',
@@ -120,10 +118,10 @@ const buttonVariants = {
   export {
     Button, 
     Input, 
-    FormGroup, 
     CloseButton, 
     RoundButton,
     Spinner,
     FullPageSpinner,
-    DialogWindow
+    DialogWindow,
+    FormGroup
   }

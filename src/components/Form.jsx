@@ -1,12 +1,12 @@
 /** @jsxImportSource @emotion/react */
 import { Button, FormGroup, Input, Spinner } from './styledComponents';
 
-export function Form({ onSubmit, buttonText, error, loading }) {
+export function Form({ onSubmit, buttonText, error, isLoading }) {
     const handleSubmit = e => {
         e.preventDefault();
         const { username, password } = e.target.elements;
         onSubmit({
-            username: username.value,
+            email: username.value,
             password: password.value
         });
     };
@@ -16,7 +16,8 @@ export function Form({ onSubmit, buttonText, error, loading }) {
             flexDirection: 'column',
             justifyContent: 'center',
             width: '100%',
-        }}>
+            position: 'relative',
+            }}>
             <FormGroup>
                 <label htmlFor="username" css={{marginBottom: '5px'}}>Email:</label>
                 <Input id="username" type="text" placeholder="username@email.com" />
@@ -25,10 +26,8 @@ export function Form({ onSubmit, buttonText, error, loading }) {
                 <label id="password" htmlFor="password" css={{marginBottom: '5px'}}>Password:</label>
                 <Input id="password" type="password" placeholder="Password" />
             </FormGroup>
-            <FormGroup><br />
-            <Button type="submit">{loading ? <Spinner/> : buttonText}</Button>
             {error ?  <p>{error.message.split(': ')[1]}</p> : null}
-            </FormGroup>
+            <Button type="submit">{isLoading ? <Spinner/> : buttonText}</Button>
         </form>
     );
 }

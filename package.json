@@ -16,7 +16,7 @@
     "@reach/tooltip": "^0.17.0",
     "@react-query-firebase/auth": "^0.3.4",
     "bootstrap": "^5.2.0-beta1",
-    "firebase": "^9.8.3",
+    "firebase": "^9.9.0",
     "html-react-parser": "^2.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
