@@ -10,9 +10,9 @@ import nothingfound from "../assets/nothingfound.png";
 function NothingOnRoute() {
   return (
     <>
-    <h2>Nothing to show here.</h2>
-    <p>You should probably go back to he <strong><Link to="/">Discover</Link></strong></p>
-    <img src={nothingfound} alt="Bookshelf logo" width="50%" height="50%"/>
+    <h2>Oops! Nothing to show here.</h2>
+    <p>You should probably go back to the <strong><Link to="/">Discover</Link></strong> page</p>
+    <img src={nothingfound} alt="Bookshelf logo" width="40%" height="40%"/>
     </>
   )
 }

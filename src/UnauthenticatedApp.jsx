@@ -6,15 +6,6 @@ import { Modal, ModalContents, ModalDismissButton, ModalOpenButton } from "./com
 import { Form } from "./components/Form";
 import { useAuthCreateUserWithEmailAndPassword,useAuthSignInWithEmailAndPassword } from "@react-query-firebase/auth";
 
-const circleDismissButton = (
-    <div css={{
-        display: 'flex',
-        flexDirection: 'row-reverse',
-        }}>
-        <CloseButton>&#10006;</CloseButton>
-    </div>
-)
-
 export default function UnauthenticatedApp() {
         
     const {
@@ -49,11 +40,7 @@ export default function UnauthenticatedApp() {
                 <ModalOpenButton>
                     <Button name="login">Login</Button>
                 </ModalOpenButton>
-                <ModalContents>
-                <ModalDismissButton>
-                    {circleDismissButton}
-                </ModalDismissButton>
-                    <h2>Login now!</h2>
+                <ModalContents title={'Login now!'}>
                     <Form 
                         onSubmit={loginUser} 
                         buttonText={"Login"} 
@@ -66,11 +53,7 @@ export default function UnauthenticatedApp() {
                 <ModalOpenButton>
                     <Button name="password" variant='secondary'>Register</Button>
                 </ModalOpenButton>
-                <ModalContents>
-                <ModalDismissButton>
-                    {circleDismissButton}
-                </ModalDismissButton>
-                    <h2>Register today!</h2>
+                <ModalContents title={'Register today!'}>
                     <Form 
                         onSubmit={registerUser} 
                         buttonText={"Register"} 

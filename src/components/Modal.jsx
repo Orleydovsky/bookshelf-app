@@ -1,5 +1,6 @@
+/** @jsxImportSource @emotion/react */
 import React from "react"
-import { DialogWindow } from "./styledComponents"
+import { CloseButton, DialogWindow } from "./styledComponents"
 
 const ModalContext = React.createContext()
 
@@ -19,14 +20,33 @@ function ModalDismissButton({children: child}) {
 function ModalOpenButton({children: child}) {
   const [, setIsOpen] = React.useContext(ModalContext)
   return React.cloneElement(child, {
-    onClick: () => setIsOpen(true),
+    onClick: (...args) => {
+      setIsOpen(true)
+      if(child.props.onClick) {
+        child.props.onClick(...args)
+      }
+    },
   })
 }
 
-function ModalContents(props) {
+function ModalContentsBase(props) {
   const [isOpen, setIsOpen] = React.useContext(ModalContext)
   return (
     <DialogWindow isOpen={isOpen} onDismiss={() => setIsOpen(false)} {...props} />
+  )
+}
+
+function ModalContents({title, children, ...props}) {
+  return (
+    <ModalContentsBase {...props}>
+      <div css={{display: 'flex', justifyContent: 'flex-end'}}>
+        <ModalDismissButton>
+            <CloseButton>&#10006;</CloseButton>
+        </ModalDismissButton>
+      </div>
+      <h2>{title}</h2>
+      {children}
+    </ModalContentsBase>
   )
 }
 
