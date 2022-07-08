@@ -4,6 +4,18 @@ import { BookDetail } from "./BookDetail";
 import Discover from "./Discover";
 import FinishedBooks from "./FinishedBooks";
 import ReadingList from "./ReadingList";
+import nothingfound from "../assets/nothingfound.png";
+
+
+function NothingOnRoute() {
+  return (
+    <>
+    <h2>Nothing to show here.</h2>
+    <p>You should probably go back to he <strong><Link to="/">Discover</Link></strong></p>
+    <img src={nothingfound} alt="Bookshelf logo" width="50%" height="50%"/>
+    </>
+  )
+}
 
 export function RoutesScreen({handleSearch, query}) {
   return (<Routes>
@@ -11,7 +23,7 @@ export function RoutesScreen({handleSearch, query}) {
       <Route path="/book/:bookId" element={<BookDetail />}/>
       <Route path="/readinglist" element={<ReadingList/>} />
       <Route path="/finishedbooks" element={<FinishedBooks />}/>
-      <Route path="*" element={<h1>Nothing found <Link to="/">Back</Link></h1>}/>
+      <Route path="*" element={<NothingOnRoute/>}/>
     </Routes>)
 }
   
