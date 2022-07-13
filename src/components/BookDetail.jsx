@@ -25,6 +25,8 @@ function BookDetailCard({bookId, docId, userBook}) {
 
     const {data: bookIdData} = useQuery(['bookDetail', bookId], 
     () => client(`https://www.googleapis.com/books/v1/volumes/${bookId}?`))
+    // should update to use self link like:
+    //https://www.googleapis.com/books/v1/volumes/nF0EAAAAYAAJ
     return (
         <div css={{
             width: 'clamp(250px, 80%, 500px)',

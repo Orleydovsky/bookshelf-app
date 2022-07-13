@@ -32,7 +32,7 @@ function ModalOpenButton({children: child}) {
 function ModalContentsBase(props) {
   const [isOpen, setIsOpen] = React.useContext(ModalContext)
   return (
-    <DialogWindow isOpen={isOpen} onDismiss={() => setIsOpen(false)} {...props} />
+    <DialogWindow aria-label="dialog" isOpen={isOpen} onDismiss={() => setIsOpen(false)} {...props} />
   )
 }
 
