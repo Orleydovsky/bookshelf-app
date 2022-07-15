@@ -5,8 +5,6 @@ import { auth } from "../firebase-config";
 import { onAuthStateChanged } from "firebase/auth";
 import { FullPageSpinner } from "./components/styledComponents";
 import { BrowserRouter } from "react-router-dom";
-// import AuthenticatedApp from './AuthenticatedApp'
-// import UnauthenticatedApp from './UnauthenticatedApp'
 
 const AuthenticatedApp = lazy(()=> import('./AuthenticatedApp'))
 const UnauthenticatedApp = lazy(()=> import('./UnauthenticatedApp'))
