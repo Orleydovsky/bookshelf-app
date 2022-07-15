@@ -18,7 +18,7 @@ function DeleteBookButton({docId}) {
 
     return(
         <Tooltip label="Delete">
-        <RoundButton onClick={mutate}>
+        <RoundButton onClick={mutate} className="delete">
             {isLoading ? <Spinner/> : <FaMinusCircle/>}
         </RoundButton>
         </Tooltip>
@@ -38,7 +38,7 @@ function AddBookButton({user, bookId}) {
     })
     return(
         <Tooltip label="Add to reading list">
-            <RoundButton onClick={mutate}>
+            <RoundButton onClick={mutate} className="add">
                 {isLoading ? <Spinner/> : <FaPlusCircle/>}
             </RoundButton> 
         </Tooltip>
@@ -67,8 +67,8 @@ function SwitchBookButton({docId, userBook}) {
                     {isLoading? 
                     <Spinner/> : 
                     isFinished ? 
-                    <FaBook/>: 
-                    <FaCheckCircle/>}
+                    <FaBook className="markAsUnread"/>: 
+                    <FaCheckCircle className="markAsRead"/>}
                 </RoundButton>
             </Tooltip>
         </div>

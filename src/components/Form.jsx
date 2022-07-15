@@ -26,7 +26,7 @@ export function Form({ onSubmit, buttonText, error, isLoading }) {
                 <label id="password" htmlFor="password" css={{marginBottom: '5px'}}>Password:</label>
                 <Input id="password" type="password" placeholder="Password" />
             </FormGroup>
-            {error ?  <p>{error.message.split(': ')[1]}</p> : null}
+            {error ?  <p className='errorMessage'>{error.message.split(': ')[1]}</p> : null}
             <Button type="submit">{isLoading ? <Spinner/> : buttonText}</Button>
         </form>
     );

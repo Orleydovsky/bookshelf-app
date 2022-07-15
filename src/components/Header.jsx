@@ -31,8 +31,8 @@ export function Header({logout}) {
           Welcome, <br />
           {auth.currentUser.email.split('@').slice(0, 1).join()}!
       </div>
-          <Button onClick={logout}>
-              <FaSignOutAlt />
+          <Button onClick={logout} className='logout'>
+            <FaSignOutAlt />
           </Button>
     </div>;
 }
