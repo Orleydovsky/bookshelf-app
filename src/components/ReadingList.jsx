@@ -19,7 +19,7 @@ function ReadingList() {
 
     return (
         <>
-        {isLoading ? <FullPageSpinner/> :
+        {isLoading ? <FullPageSpinner className="spinner"/> :
         <div css={{
             display: 'flex',
             flexDirection: 'column',

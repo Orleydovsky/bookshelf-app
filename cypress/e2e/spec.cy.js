@@ -13,7 +13,7 @@ describe('should allow a typical user flow', () => {
       cy.get('.errorMessage').should('contain', 'Error (auth/email-already-in-use).')
       cy.findByRole('button', {name: /✖/i}).click()
     })
-
+    
     cy.findByRole('button', {name: /login/i}).click()
     cy.findByRole('dialog').should('be.visible')
     cy.findByRole('dialog').within(()=>{
@@ -24,23 +24,30 @@ describe('should allow a typical user flow', () => {
     
   })
   
-  it('can search for books and add them reading list and then to the finished books', async () => {
+  it('can search for books and add them reading list', () => {
     cy.findByRole('searchbox').type('vampyr{enter}')
     cy.get('p').first().click()
     cy.get('.add').click()
-    cy.wait(5000)
+    cy.wait(3000)
+    cy.get('.delete').should('exist')
+    cy.get('.markAsRead').should('exist')
+  })
+  
+  it('can mark books as finished', () => {
+    cy.visit('http://localhost:3000/readinglist')
+    cy.get('.delete').should('exist')
     cy.get('.markAsRead').click()
-    cy.wait(5000)
+    cy.wait(3000)
+  })
+  
+  it('can delete a book from finished list', () => {
     cy.visit('http://localhost:3000/finishedbooks')
-    
+    cy.get('.delete').click()
+    cy.wait(3000)
   })
 
-  // it('can mark a book as read', () => {
-  //   cy.get('.markAsRead').click()
-  // })
+  it('can logout', () => {
+    cy.get('.logout').click()
+  })
 
-  // it('can logout', () => {
-  //   cy.get('.logout').click()
-
-  // })
 })

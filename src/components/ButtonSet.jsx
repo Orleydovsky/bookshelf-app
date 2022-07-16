@@ -19,7 +19,7 @@ function DeleteBookButton({docId}) {
     return(
         <Tooltip label="Delete">
         <RoundButton onClick={mutate} className="delete">
-            {isLoading ? <Spinner/> : <FaMinusCircle/>}
+            {isLoading ? <Spinner className="spinner"/> : <FaMinusCircle/>}
         </RoundButton>
         </Tooltip>
     )
@@ -39,7 +39,7 @@ function AddBookButton({user, bookId}) {
     return(
         <Tooltip label="Add to reading list">
             <RoundButton onClick={mutate} className="add">
-                {isLoading ? <Spinner/> : <FaPlusCircle/>}
+                {isLoading ? <Spinner className="spinner"/> : <FaPlusCircle/>}
             </RoundButton> 
         </Tooltip>
     )
@@ -65,7 +65,7 @@ function SwitchBookButton({docId, userBook}) {
             <Tooltip label={isFinished?'Unmark as read':'Mark as read'}>
                 <RoundButton onClick={mutate}>
                     {isLoading? 
-                    <Spinner/> : 
+                    <Spinner className="spinner"/> : 
                     isFinished ? 
                     <FaBook className="markAsUnread"/>: 
                     <FaCheckCircle className="markAsRead"/>}
