@@ -28,14 +28,13 @@ Once forked or cloned, locate on the root folder and execute
 ```
     
 ## Screenshots
+Here you can see the discover page, showing the search results for "the little prince" keywords
 
-![App Screenshot](https://via.placeholder.com/468x300?text=App+Screenshot+Here)
+![App Screenshot](https://raw.githubusercontent.com/Orleydovsky/bookshelf-app/main/public/images/discover-page.png)
 
 
 ## Tech Stack
 
-**Client:** React, Styled-Components
-
-**Backend as a Service:** Node, Express
+Front End, React. Styles management, styled components. Back end as a Service, Cloud Firestore. User authentication, Firebase Authentication. Book and author's information consumed from, Google Books APIs
         
 
