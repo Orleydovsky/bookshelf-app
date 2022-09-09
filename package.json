@@ -8,7 +8,8 @@
     "preview": "vite preview",
     "test": "vitest",
     "coverage": "vitest run --coverage",
-    "cypress:open": "cypress open"
+    "cypress:open": "cypress open",
+    "lint": "eslint . --fix"
   },
   "dependencies": {
     "@emotion/core": "^11.0.0",
@@ -19,6 +20,12 @@
     "@reach/tooltip": "^0.17.0",
     "@react-query-firebase/auth": "^0.3.4",
     "bootstrap": "^5.2.0-beta1",
+    "eslint": "^8.0.1",
+    "eslint-config-standard": "^17.0.0",
+    "eslint-plugin-import": "^2.25.2",
+    "eslint-plugin-n": "^15.0.0",
+    "eslint-plugin-promise": "^6.0.0",
+    "eslint-plugin-react": "^7.31.8",
     "firebase": "^9.9.0",
     "html-react-parser": "^2.0.0",
     "node-fetch": "^3.2.7",

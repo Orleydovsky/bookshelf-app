@@ -1,11 +1,9 @@
 /** @jsxImportSource @emotion/react */
-import { Button, RoundButton } from '../components/styledComponents';
-import { FaBook, FaSignOutAlt, FaUser } from "react-icons/fa";
-import { auth } from "../../firebase-config";
-import { Link } from 'react-router-dom';
+import { Button } from '../components/styledComponents'
+import { FaSignOutAlt, FaUser } from 'react-icons/fa'
+import { auth } from '../../firebase-config'
 
-export function Header({logout}) {
-
+export function Header ({ logout }) {
   return <div css={{
     display: 'flex',
     flexDirection: 'row',
@@ -18,22 +16,21 @@ export function Header({logout}) {
     boxShadow: 'rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px'
   }}>
     <div css={{
-        display: "flex",
-        flexDirection: "row",
-        alignItems: "center"
-      }}>
-          <FaUser css={{
-          marginRight: '15px',
-          padding: '10px',
-          borderRadius: '15px',
-          boxShadow: 'rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px'
-        }} />
-          Welcome, <br />
-          {auth.currentUser.email.split('@').slice(0, 1).join()}!
-      </div>
-          <Button onClick={logout} className='logout'>
-            <FaSignOutAlt />
-          </Button>
-    </div>;
+      display: 'flex',
+      flexDirection: 'row',
+      alignItems: 'center'
+    }}>
+      <FaUser css={{
+        marginRight: '15px',
+        padding: '10px',
+        borderRadius: '15px',
+        boxShadow: 'rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px'
+      }} />
+      Welcome, <br />
+      {auth.currentUser.email.split('@').slice(0, 1).join()}!
+    </div>
+    <Button onClick={logout} className='logout'>
+      <FaSignOutAlt />
+    </Button>
+  </div>
 }
-  

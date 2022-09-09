@@ -1,11 +1,10 @@
 /** @jsxImportSource @emotion/react */
-import React from "react";
-import { NavLink } from "react-router-dom";
-import { Button } from "./styledComponents";
+import { NavLink } from 'react-router-dom'
+import { Button } from './styledComponents'
 
-export function NavBar() {
+export function NavBar () {
   return (
-  <div css={{
+    <div css={{
       marginTop: '15px',
       '& .active Button': {
         boxShadow: 'rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px',
@@ -25,7 +24,6 @@ export function NavBar() {
         <Button>Finished books</Button>
       </NavLink>
 
-  </div>
+    </div>
   )
 }
-  
